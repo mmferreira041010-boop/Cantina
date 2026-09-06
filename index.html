@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Cantina Online</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6fa;
+      color: #222;
+    }
+
+    header {
+      background: #ff7a00;
+      color: white;
+      padding: 22px 18px;
+      text-align: center;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    }
+
+    header h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    header p {
+      font-size: 14px;
+      opacity: 0.95;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 900px;
+      margin: 20px auto;
+    }
+
+    .titulo {
+      margin-bottom: 15px;
+      font-size: 22px;
+    }
+
+    .produtos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 14px;
+    }
+
+    .produto {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .produto .emoji {
+      font-size: 42px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .produto h3 {
+      font-size: 17px;
+      margin-bottom: 7px;
+    }
+
+    .preco {
+      color: #ff7a00;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 11px 14px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+    }
+
+    .btn-add {
+      background: #ff7a00;
+      color: white;
+    }
+
+    .btn-add:active {
+      transform: scale(0.97);
+    }
+
+    .carrinho {
+      background: white;
+      margin-top: 25px;
+      padding: 18px;
+      border-radius: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .carrinho h2 {
+      margin-bottom: 15px;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid #eee;
+      padding: 12px 0;
+    }
+
+    .item-info {
+      flex: 1;
+    }
+
+    .item-nome {
+      font-weight: bold;
+    }
+
+    .item-preco {
+      color: #666;
+      font-size: 14px;
+      margin-top: 3px;
+    }
+
+    .quantidade {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quantidade button {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      border-radius: 8px;
+      background: #eee;
+      color: #222;
+      font-size: 18px;
+    }
+
+    .total {
+      text-align: right;
+      font-size: 20px;
+      font-weight: bold;
+      margin: 18px 0;
+    }
+
+    .dados {
+      margin-top: 20px;
+    }
+
+    .dados label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 7px;
+    }
+
+    .dados input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .btn-pedido {
+      background: #16a34a;
+      color: white;
+      font-size: 17px;
+    }
+
+    .vazio {
+      color: #777;
+      text-align: center;
+      padding: 15px;
+    }
+
+    .confirmacao {
+      display: none;
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: 14px;
+      background: #dcfce7;
+      color: #166534;
+      text-align: center;
+    }
+
+    .confirmacao h2 {
+      margin-bottom: 8px;
+    }
+
+    .status {
+      display: none;
+      margin-top: 15px;
+      background: white;
+      padding: 18px;
+      border-radius: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .status h2 {
+      margin-bottom: 15px;
+    }
+
+    .status-etapas {
+      display: flex;
+      justify-content: space-between;
+      gap: 5px;
+    }
+
+    .etapa {
+      flex: 1;
+      text-align: center;
+      padding: 10px 5px;
+      border-radius: 10px;
+      background: #eee;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .etapa.ativa {
+      background: #ff7a00;
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 10px;
+      color: #777;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>🍔 Cantina Online</h1>
+  <p>Faça seu pedido sem enfrentar fila!</p>
+</header>
+
+<div class="container">
+
+  <h2 class="titulo">📋 Cardápio</h2>
+
+  <div class="produtos">
+
+    <div class="produto">
+      <div class="emoji">🥪</div>
+      <h3>Sanduíche</h3>
+      <div class="preco">R$ 6,00</div>
+      <button class="btn-add" onclick="adicionar('Sanduíche', 6)">
+        Adicionar
+      </button>
+    </div>
+
+    <div class="produto">
+      <div class="emoji">🌭</div>
+      <h3>Cachorro-quente</h3>
+      <div class="preco">R$ 7,00</div>
+      <button class="btn-add" onclick="adicionar('Cachorro-quente', 7)">
+        Adicionar
+      </button>
+    </div>
+
+    <div class="produto">
+      <div class="emoji">🍕</div>
+      <h3>Pizza</h3>
+      <div class="preco">R$ 5,00</div>
+      <button class="btn-add" onclick="adicionar('Pizza', 5)">
+        Adicionar
+      </button>
+    </div>
+
+    <div class="produto">
+      <div class="emoji">🥤</div>
+      <h3>Refrigerante</h3>
+      <div class="preco">R$ 4,00</div>
+      <button class="btn-add" onclick="adicionar('Refrigerante', 4)">
+        Adicionar
+      </button>
+    </div>
+
+    <div class="produto">
+      <div class="emoji">🧃</div>
+      <h3>Suco</h3>
+      <div class="preco">R$ 3,50</div>
+      <button class="btn-add" onclick="adicionar('Suco', 3.5)">
+        Adicionar
+      </button>
+    </div>
+
+    <div class="produto">
+      <div class="emoji">🍪</div>
+      <h3>Biscoito</h3>
+      <div class="preco">R$ 2,50</div>
+      <button class="btn-add" onclick="adicionar('Biscoito', 2.5)">
+        Adicionar
+      </button>
+    </div>
+
+  </div>
+
+  <div class="carrinho">
+
+    <h2>🛒 Seu carrinho</h2>
+
+    <div id="listaCarrinho">
+      <div class="vazio">
+        Seu carrinho está vazio.
+      </div>
+    </div>
+
+    <div class="total">
+      Total: R$ <span id="total">0,00</span>
+    </div>
+
+    <div class="dados">
+
+      <label for="nome">👤 Seu nome</label>
+
+      <input
+        type="text"
+        id="nome"
+        placeholder="Digite seu nome"
+      >
+
+      <button class="btn-pedido" onclick="enviarPedido()">
+        ✅ Enviar pedido
+      </button>
+
+    </div>
+
+    <div class="confirmacao" id="confirmacao">
+
+      <h2>🎉 Pedido enviado!</h2>
+
+      <p>
+        Seu pedido foi registrado.
+      </p>
+
+      <p>
+        Número do pedido:
+        <strong id="numeroPedido"></strong>
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="status" id="status">
+
+    <h2>📦 Acompanhar pedido</h2>
+
+    <div class="status-etapas">
+
+      <div class="etapa ativa" id="recebido">
+        RECEBIDO
+      </div>
+
+      <div class="etapa" id="preparando">
+        PREPARANDO
+      </div>
+
+      <div class="etapa" id="pronto">
+        PRONTO
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  Cantina Online • Sistema de pedidos escolares
+</footer>
+
+<script>
+
+  let carrinho = [];
+
+  function adicionar(nome, preco) {
+
+    const existente = carrinho.find(item => item.nome === nome);
+
+    if (existente) {
+      existente.quantidade++;
+    } else {
+      carrinho.push({
+        nome: nome,
+        preco: preco,
+        quantidade: 1
+      });
+    }
+
+    atualizarCarrinho();
+  }
+
+  function diminuir(nome) {
+
+    const item = carrinho.find(item => item.nome === nome);
+
+    if (!item) return;
+
+    item.quantidade--;
+
+    if (item.quantidade <= 0) {
+      carrinho = carrinho.filter(item => item.nome !== nome);
+    }
+
+    atualizarCarrinho();
+  }
+
+  function aumentar(nome) {
+
+    const item = carrinho.find(item => item.nome === nome);
+
+    if (item) {
+      item.quantidade++;
+    }
+
+    atualizarCarrinho();
+  }
+
+  function atualizarCarrinho() {
+
+    const lista = document.getElementById("listaCarrinho");
+    const totalElemento = document.getElementById("total");
+
+    lista.innerHTML = "";
+
+    if (carrinho.length === 0) {
+
+      lista.innerHTML =
+        '<div class="vazio">Seu carrinho está vazio.</div>';
+
+      totalElemento.textContent = "0,00";
+
+      return;
+    }
+
+    let total = 0;
+
+    carrinho.forEach(item => {
+
+      total += item.preco * item.quantidade;
+
+      const div = document.createElement("div");
+
+      div.className = "item";
+
+      div.innerHTML = `
+
+        <div class="item-info">
+
+          <div class="item-nome">
+            ${item.nome}
+          </div>
+
+          <div class="item-preco">
+            R$ ${item.preco.toFixed(2).replace(".", ",")}
+          </div>
+
+        </div>
+
+        <div class="quantidade">
+
+          <button onclick="diminuir('${item.nome}')">
+            −
+          </button>
+
+          <strong>
+            ${item.quantidade}
+          </strong>
+
+          <button onclick="aumentar('${item.nome}')">
+            +
+          </button>
+
+        </div>
+
+      `;
+
+      lista.appendChild(div);
+
+    });
+
+    totalElemento.textContent =
+      total.toFixed(2).replace(".", ",");
+
+  }
+
+  function enviarPedido() {
+
+    const nome =
+      document.getElementById("nome").value.trim();
+
+    if (carrinho.length === 0) {
+
+      alert("Adicione pelo menos um produto ao carrinho.");
+
+      return;
+    }
+
+    if (nome === "") {
+
+      alert("Digite seu nome antes de enviar o pedido.");
+
+      return;
+    }
+
+    const numero =
+      Math.floor(1000 + Math.random() * 9000);
+
+    document.getElementById("numeroPedido")
+      .textContent = "#" + numero;
+
+    document.getElementById("confirmacao")
+      .style.display = "block";
+
+    document.getElementById("status")
+      .style.display = "block";
+
+    window.scrollTo({
+      top: document.body.scrollHeight,
+      behavior: "smooth"
+    });
+
+  }
+
+</script>
+
+</body>
+</html>
