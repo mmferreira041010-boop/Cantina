@@ -1,244 +1,219 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Cantina Online</title>
 
   <style>
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f5f6fa;
+      background: #f5f5f5;
       color: #222;
     }
 
     header {
       background: #ff7a00;
       color: white;
-      padding: 22px 18px;
+      padding: 22px 15px;
       text-align: center;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
     }
 
     header h1 {
+      margin: 0;
       font-size: 28px;
-      margin-bottom: 6px;
     }
 
     header p {
-      font-size: 14px;
-      opacity: 0.95;
+      margin: 7px 0 0;
     }
 
     .container {
-      width: 92%;
-      max-width: 900px;
-      margin: 20px auto;
+      max-width: 650px;
+      margin: auto;
+      padding: 18px;
     }
 
-    .titulo {
-      margin-bottom: 15px;
-      font-size: 22px;
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
     }
 
-    .produtos {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 14px;
+    h2 {
+      margin-top: 0;
     }
 
     .produto {
-      background: white;
-      border-radius: 16px;
-      padding: 16px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 0;
+      border-bottom: 1px solid #eee;
     }
 
-    .produto .emoji {
-      font-size: 42px;
-      text-align: center;
-      margin-bottom: 10px;
+    .produto:last-child {
+      border-bottom: none;
     }
 
-    .produto h3 {
+    .produto-info strong {
+      display: block;
       font-size: 17px;
-      margin-bottom: 7px;
     }
 
     .preco {
-      color: #ff7a00;
-      font-size: 18px;
+      color: #ff6500;
       font-weight: bold;
-      margin-bottom: 12px;
+      margin-top: 4px;
     }
 
     button {
       border: none;
-      border-radius: 10px;
-      padding: 11px 14px;
-      cursor: pointer;
-      font-weight: bold;
-      width: 100%;
-    }
-
-    .btn-add {
+      border-radius: 9px;
+      padding: 10px 14px;
       background: #ff7a00;
       color: white;
-    }
-
-    .btn-add:active {
-      transform: scale(0.97);
-    }
-
-    .carrinho {
-      background: white;
-      margin-top: 25px;
-      padding: 18px;
-      border-radius: 16px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
-    }
-
-    .carrinho h2 {
-      margin-bottom: 15px;
-    }
-
-    .item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      border-bottom: 1px solid #eee;
-      padding: 12px 0;
-    }
-
-    .item-info {
-      flex: 1;
-    }
-
-    .item-nome {
       font-weight: bold;
+      cursor: pointer;
     }
 
-    .item-preco {
-      color: #666;
-      font-size: 14px;
-      margin-top: 3px;
+    button:active {
+      transform: scale(.97);
     }
 
     .quantidade {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      margin: 8px 0;
     }
 
     .quantidade button {
-      width: 32px;
-      height: 32px;
-      padding: 0;
-      border-radius: 8px;
-      background: #eee;
-      color: #222;
-      font-size: 18px;
+      padding: 6px 11px;
     }
 
-    .total {
-      text-align: right;
-      font-size: 20px;
-      font-weight: bold;
-      margin: 18px 0;
-    }
-
-    .dados {
-      margin-top: 20px;
-    }
-
-    .dados label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 7px;
-    }
-
-    .dados input {
+    input {
       width: 100%;
       padding: 13px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
+      border: 1px solid #ccc;
+      border-radius: 9px;
       font-size: 16px;
+      margin-top: 7px;
       margin-bottom: 12px;
     }
 
-    .btn-pedido {
-      background: #16a34a;
-      color: white;
+    .total {
+      font-size: 20px;
+      font-weight: bold;
+      text-align: right;
+      margin-top: 15px;
+    }
+
+    .enviar {
+      width: 100%;
       font-size: 17px;
-    }
-
-    .vazio {
-      color: #777;
-      text-align: center;
-      padding: 15px;
-    }
-
-    .confirmacao {
-      display: none;
-      margin-top: 20px;
-      padding: 18px;
-      border-radius: 14px;
-      background: #dcfce7;
-      color: #166534;
-      text-align: center;
-    }
-
-    .confirmacao h2 {
-      margin-bottom: 8px;
+      padding: 14px;
+      margin-top: 12px;
     }
 
     .status {
-      display: none;
-      margin-top: 15px;
-      background: white;
-      padding: 18px;
-      border-radius: 16px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+      text-align: center;
+      padding: 15px;
+      border-radius: 10px;
+      background: #eee;
+      font-weight: bold;
+      margin-top: 12px;
     }
 
-    .status h2 {
+    .status.recebido {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status.preparando {
+      background: #ffe0bd;
+      color: #8a4200;
+    }
+
+    .status.pronto {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .pedido-numero {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .erro {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 12px;
+      border-radius: 9px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .sucesso {
+      background: #d4edda;
+      color: #155724;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .admin {
+      display: none;
+    }
+
+    .pedido-admin {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      padding: 15px;
       margin-bottom: 15px;
     }
 
-    .status-etapas {
+    .pedido-admin h3 {
+      margin-top: 0;
+    }
+
+    .botoes-status {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .botoes-status button {
+      flex: 1;
+      min-width: 100px;
+    }
+
+    .pequeno {
+      font-size: 13px;
+      color: #666;
+    }
+
+    .topo-admin {
       display: flex;
       justify-content: space-between;
-      gap: 5px;
+      align-items: center;
+      gap: 10px;
     }
 
-    .etapa {
-      flex: 1;
-      text-align: center;
-      padding: 10px 5px;
-      border-radius: 10px;
-      background: #eee;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    .etapa.ativa {
-      background: #ff7a00;
-      color: white;
-    }
-
-    footer {
-      text-align: center;
-      padding: 30px 10px;
-      color: #777;
-      font-size: 13px;
+    #adminLogin {
+      display: none;
     }
   </style>
 </head>
@@ -247,151 +222,198 @@
 
 <header>
   <h1>🍔 Cantina Online</h1>
-  <p>Faça seu pedido sem enfrentar fila!</p>
+  <p>Faça seu pedido sem enfrentar fila.</p>
 </header>
 
 <div class="container">
 
-  <h2 class="titulo">📋 Cardápio</h2>
+  <!-- ÁREA DO ALUNO -->
+  <section id="areaAluno">
 
-  <div class="produtos">
+    <div class="card">
+      <h2>🍴 Cardápio</h2>
 
-    <div class="produto">
-      <div class="emoji">🥪</div>
-      <h3>Sanduíche</h3>
-      <div class="preco">R$ 6,00</div>
-      <button class="btn-add" onclick="adicionar('Sanduíche', 6)">
-        Adicionar
-      </button>
-    </div>
+      <div class="produto">
+        <div class="produto-info">
+          <strong>🥪 Sanduíche</strong>
+          <div class="preco">R$ 6,00</div>
+        </div>
+        <button onclick="adicionar('Sanduíche', 6)">Adicionar</button>
+      </div>
 
-    <div class="produto">
-      <div class="emoji">🌭</div>
-      <h3>Cachorro-quente</h3>
-      <div class="preco">R$ 7,00</div>
-      <button class="btn-add" onclick="adicionar('Cachorro-quente', 7)">
-        Adicionar
-      </button>
-    </div>
+      <div class="produto">
+        <div class="produto-info">
+          <strong>🌭 Cachorro-quente</strong>
+          <div class="preco">R$ 7,00</div>
+        </div>
+        <button onclick="adicionar('Cachorro-quente', 7)">Adicionar</button>
+      </div>
 
-    <div class="produto">
-      <div class="emoji">🍕</div>
-      <h3>Pizza</h3>
-      <div class="preco">R$ 5,00</div>
-      <button class="btn-add" onclick="adicionar('Pizza', 5)">
-        Adicionar
-      </button>
-    </div>
+      <div class="produto">
+        <div class="produto-info">
+          <strong>🍕 Pizza</strong>
+          <div class="preco">R$ 5,00</div>
+        </div>
+        <button onclick="adicionar('Pizza', 5)">Adicionar</button>
+      </div>
 
-    <div class="produto">
-      <div class="emoji">🥤</div>
-      <h3>Refrigerante</h3>
-      <div class="preco">R$ 4,00</div>
-      <button class="btn-add" onclick="adicionar('Refrigerante', 4)">
-        Adicionar
-      </button>
-    </div>
+      <div class="produto">
+        <div class="produto-info">
+          <strong>🥤 Refrigerante</strong>
+          <div class="preco">R$ 4,00</div>
+        </div>
+        <button onclick="adicionar('Refrigerante', 4)">Adicionar</button>
+      </div>
 
-    <div class="produto">
-      <div class="emoji">🧃</div>
-      <h3>Suco</h3>
-      <div class="preco">R$ 3,50</div>
-      <button class="btn-add" onclick="adicionar('Suco', 3.5)">
-        Adicionar
-      </button>
-    </div>
+      <div class="produto">
+        <div class="produto-info">
+          <strong>🧃 Suco</strong>
+          <div class="preco">R$ 3,50</div>
+        </div>
+        <button onclick="adicionar('Suco', 3.5)">Adicionar</button>
+      </div>
 
-    <div class="produto">
-      <div class="emoji">🍪</div>
-      <h3>Biscoito</h3>
-      <div class="preco">R$ 2,50</div>
-      <button class="btn-add" onclick="adicionar('Biscoito', 2.5)">
-        Adicionar
-      </button>
-    </div>
-
-  </div>
-
-  <div class="carrinho">
-
-    <h2>🛒 Seu carrinho</h2>
-
-    <div id="listaCarrinho">
-      <div class="vazio">
-        Seu carrinho está vazio.
+      <div class="produto">
+        <div class="produto-info">
+          <strong>🍪 Biscoito</strong>
+          <div class="preco">R$ 2,50</div>
+        </div>
+        <button onclick="adicionar('Biscoito', 2.5)">Adicionar</button>
       </div>
     </div>
 
-    <div class="total">
-      Total: R$ <span id="total">0,00</span>
+    <div class="card">
+      <h2>🛒 Seu pedido</h2>
+
+      <div id="carrinho">
+        <p>Nenhum produto adicionado.</p>
+      </div>
+
+      <div class="total">
+        Total: R$ <span id="total">0,00</span>
+      </div>
     </div>
 
-    <div class="dados">
+    <div class="card">
+      <h2>👤 Seus dados</h2>
 
-      <label for="nome">👤 Seu nome</label>
+      <label for="nome">Nome do aluno:</label>
+      <input id="nome" type="text" placeholder="Digite seu nome">
 
-      <input
-        type="text"
-        id="nome"
-        placeholder="Digite seu nome"
-      >
-
-      <button class="btn-pedido" onclick="enviarPedido()">
-        ✅ Enviar pedido
+      <button class="enviar" onclick="enviarPedido()">
+        📤 Enviar pedido
       </button>
 
+      <div id="mensagemErro" class="erro"></div>
+      <div id="mensagemSucesso" class="sucesso"></div>
     </div>
 
-    <div class="confirmacao" id="confirmacao">
+    <div id="acompanhar" class="card" style="display:none;">
+      <h2>📡 Acompanhar pedido</h2>
 
-      <h2>🎉 Pedido enviado!</h2>
+      <div class="pedido-numero">
+        Pedido #<span id="numeroPedido"></span>
+      </div>
 
-      <p>
-        Seu pedido foi registrado.
-      </p>
-
-      <p>
-        Número do pedido:
-        <strong id="numeroPedido"></strong>
-      </p>
-
-    </div>
-
-  </div>
-
-  <div class="status" id="status">
-
-    <h2>📦 Acompanhar pedido</h2>
-
-    <div class="status-etapas">
-
-      <div class="etapa ativa" id="recebido">
+      <div id="statusPedido" class="status recebido">
         RECEBIDO
       </div>
 
-      <div class="etapa" id="preparando">
-        PREPARANDO
-      </div>
-
-      <div class="etapa" id="pronto">
-        PRONTO
-      </div>
-
+      <p style="text-align:center;">
+        Esta tela será atualizada quando a cantina mudar o status.
+      </p>
     </div>
 
-  </div>
+  </section>
+
+
+  <!-- LOGIN DA CANTINA -->
+  <section id="adminLogin" class="card">
+    <h2>🔐 Área da Cantina</h2>
+
+    <label>E-mail:</label>
+    <input id="adminEmail" type="email" placeholder="E-mail da cantina">
+
+    <label>Senha:</label>
+    <input id="adminSenha" type="password" placeholder="Senha">
+
+    <button class="enviar" onclick="entrarAdmin()">
+      Entrar
+    </button>
+
+    <div id="erroLogin" class="erro"></div>
+  </section>
+
+
+  <!-- PAINEL DA CANTINA -->
+  <section id="adminArea" class="admin">
+
+    <div class="card">
+      <div class="topo-admin">
+        <h2>📋 Pedidos</h2>
+        <button onclick="sairAdmin()">Sair</button>
+      </div>
+
+      <div id="listaPedidos">
+        <p>Carregando pedidos...</p>
+      </div>
+    </div>
+
+  </section>
 
 </div>
 
-<footer>
-  Cantina Online • Sistema de pedidos escolares
-</footer>
 
-<script>
+<script type="module">
+
+  import { initializeApp }
+    from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+
+  import {
+    getAuth,
+    signInAnonymously,
+    signInWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+
+  import {
+    getDatabase,
+    ref,
+    push,
+    set,
+    onValue,
+    update
+  } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
+
+
+  /* ==============================
+     CONFIGURAÇÃO DO FIREBASE
+     ============================== */
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCFNXgfbNFQ8GcX1vnbuw9FT0aXWxzrc34",
+    authDomain: "cantina-igreja-e5f29.firebaseapp.com",
+    projectId: "cantina-igreja-e5f29",
+    storageBucket: "cantina-igreja-e5f29.firebasestorage.app",
+    messagingSenderId: "432970369348",
+    appId: "1:432970369348:web:f3a0298f132e03e2d62f11",
+    measurementId: "G-ZXD631PL0M"
+  };
+
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+
+  /* ==============================
+     CARRINHO
+     ============================== */
 
   let carrinho = [];
 
-  function adicionar(nome, preco) {
+  window.adicionar = function(nome, preco) {
 
     const existente = carrinho.find(item => item.nome === nome);
 
@@ -406,137 +428,448 @@
     }
 
     atualizarCarrinho();
-  }
+  };
 
-  function diminuir(nome) {
+
+  window.alterarQuantidade = function(nome, valor) {
 
     const item = carrinho.find(item => item.nome === nome);
 
     if (!item) return;
 
-    item.quantidade--;
+    item.quantidade += valor;
 
     if (item.quantidade <= 0) {
       carrinho = carrinho.filter(item => item.nome !== nome);
     }
 
     atualizarCarrinho();
-  }
+  };
 
-  function aumentar(nome) {
-
-    const item = carrinho.find(item => item.nome === nome);
-
-    if (item) {
-      item.quantidade++;
-    }
-
-    atualizarCarrinho();
-  }
 
   function atualizarCarrinho() {
 
-    const lista = document.getElementById("listaCarrinho");
+    const elemento = document.getElementById("carrinho");
     const totalElemento = document.getElementById("total");
 
-    lista.innerHTML = "";
+    if (carrinho.length === 0) {
+      elemento.innerHTML = "<p>Nenhum produto adicionado.</p>";
+      totalElemento.textContent = "0,00";
+      return;
+    }
+
+    let total = 0;
+
+    elemento.innerHTML = "";
+
+    carrinho.forEach(item => {
+
+      const subtotal = item.preco * item.quantidade;
+      total += subtotal;
+
+      const div = document.createElement("div");
+
+      div.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <div>
+            <strong>${item.nome}</strong>
+            <br>
+            R$ ${subtotal.toFixed(2).replace(".", ",")}
+          </div>
+
+          <div class="quantidade">
+            <button onclick="alterarQuantidade('${item.nome}', -1)">−</button>
+            <strong>${item.quantidade}</strong>
+            <button onclick="alterarQuantidade('${item.nome}', 1)">+</button>
+          </div>
+        </div>
+      `;
+
+      elemento.appendChild(div);
+    });
+
+    totalElemento.textContent = total.toFixed(2).replace(".", ",");
+  }
+
+
+  /* ==============================
+     LOGIN DO ALUNO
+     ============================== */
+
+  async function iniciarAluno() {
+
+    try {
+
+      if (!auth.currentUser) {
+        await signInAnonymously(auth);
+      }
+
+    } catch (erro) {
+
+      console.error(erro);
+
+      mostrarErro(
+        "Não foi possível conectar ao Firebase. Verifique se o login Anônimo está ativado."
+      );
+
+    }
+  }
+
+
+  /* ==============================
+     ENVIAR PEDIDO
+     ============================== */
+
+  window.enviarPedido = async function() {
+
+    const nome = document.getElementById("nome").value.trim();
+
+    esconderMensagens();
+
+    if (!nome) {
+      mostrarErro("Digite seu nome antes de enviar o pedido.");
+      return;
+    }
 
     if (carrinho.length === 0) {
+      mostrarErro("Adicione pelo menos um produto.");
+      return;
+    }
 
-      lista.innerHTML =
-        '<div class="vazio">Seu carrinho está vazio.</div>';
-
-      totalElemento.textContent = "0,00";
-
+    if (!auth.currentUser) {
+      mostrarErro("Conectando ao sistema. Tente novamente em alguns segundos.");
       return;
     }
 
     let total = 0;
 
     carrinho.forEach(item => {
-
       total += item.preco * item.quantidade;
-
-      const div = document.createElement("div");
-
-      div.className = "item";
-
-      div.innerHTML = `
-
-        <div class="item-info">
-
-          <div class="item-nome">
-            ${item.nome}
-          </div>
-
-          <div class="item-preco">
-            R$ ${item.preco.toFixed(2).replace(".", ",")}
-          </div>
-
-        </div>
-
-        <div class="quantidade">
-
-          <button onclick="diminuir('${item.nome}')">
-            −
-          </button>
-
-          <strong>
-            ${item.quantidade}
-          </strong>
-
-          <button onclick="aumentar('${item.nome}')">
-            +
-          </button>
-
-        </div>
-
-      `;
-
-      lista.appendChild(div);
-
     });
 
-    totalElemento.textContent =
-      total.toFixed(2).replace(".", ",");
+    const pedidoRef = push(ref(db, "orders"));
+
+    const pedido = {
+
+      studentUid: auth.currentUser.uid,
+
+      nome: nome,
+
+      itens: carrinho.map(item => ({
+        nome: item.nome,
+        preco: item.preco,
+        quantidade: item.quantidade
+      })),
+
+      total: total,
+
+      status: "RECEBIDO",
+
+      criadoEm: Date.now()
+
+    };
+
+    try {
+
+      await set(pedidoRef, pedido);
+
+      document.getElementById("mensagemSucesso").style.display = "block";
+
+      document.getElementById("mensagemSucesso").innerHTML =
+        "✅ Pedido enviado com sucesso!";
+
+      document.getElementById("numeroPedido").textContent =
+        pedidoRef.key.substring(0, 6).toUpperCase();
+
+      document.getElementById("acompanhar").style.display = "block";
+
+      acompanharPedido(pedidoRef.key);
+
+      carrinho = [];
+
+      atualizarCarrinho();
+
+    } catch (erro) {
+
+      console.error(erro);
+
+      mostrarErro(
+        "Não foi possível enviar o pedido. Verifique as regras do Firebase."
+      );
+    }
+  };
+
+
+  /* ==============================
+     ACOMPANHAR PEDIDO
+     ============================== */
+
+  function acompanharPedido(id) {
+
+    const pedidoRef = ref(db, "orders/" + id);
+
+    onValue(pedidoRef, snapshot => {
+
+      const pedido = snapshot.val();
+
+      if (!pedido) return;
+
+      const status = pedido.status || "RECEBIDO";
+
+      const elemento = document.getElementById("statusPedido");
+
+      elemento.textContent = status;
+
+      elemento.className = "status " + status.toLowerCase();
+
+    });
+  }
+
+
+  /* ==============================
+     LOGIN DA CANTINA
+     ============================== */
+
+  window.entrarAdmin = async function() {
+
+    const email = document.getElementById("adminEmail").value.trim();
+    const senha = document.getElementById("adminSenha").value;
+
+    document.getElementById("erroLogin").style.display = "none";
+
+    if (!email || !senha) {
+
+      document.getElementById("erroLogin").textContent =
+        "Digite o e-mail e a senha.";
+
+      document.getElementById("erroLogin").style.display = "block";
+
+      return;
+    }
+
+    try {
+
+      await signInWithEmailAndPassword(auth, email, senha);
+
+    } catch (erro) {
+
+      console.error(erro);
+
+      document.getElementById("erroLogin").textContent =
+        "E-mail ou senha incorretos.";
+
+      document.getElementById("erroLogin").style.display = "block";
+    }
+  };
+
+
+  /* ==============================
+     PAINEL DA CANTINA
+     ============================== */
+
+  function abrirPainelAdmin() {
+
+    document.getElementById("areaAluno").style.display = "none";
+
+    document.getElementById("adminLogin").style.display = "none";
+
+    document.getElementById("adminArea").style.display = "block";
+
+    carregarPedidos();
+  }
+
+
+  function carregarPedidos() {
+
+    const pedidosRef = ref(db, "orders");
+
+    onValue(pedidosRef, snapshot => {
+
+      const dados = snapshot.val();
+
+      const lista = document.getElementById("listaPedidos");
+
+      lista.innerHTML = "";
+
+      if (!dados) {
+
+        lista.innerHTML = "<p>Nenhum pedido recebido.</p>";
+
+        return;
+      }
+
+      const pedidos = Object.entries(dados)
+        .map(([id, pedido]) => ({
+          id,
+          ...pedido
+        }))
+        .sort((a, b) => b.criadoEm - a.criadoEm);
+
+
+      pedidos.forEach(pedido => {
+
+        const div = document.createElement("div");
+
+        div.className = "pedido-admin";
+
+        let itens = "";
+
+        pedido.itens.forEach(item => {
+
+          itens += `
+            <li>
+              ${item.quantidade}x ${item.nome}
+            </li>
+          `;
+
+        });
+
+
+        div.innerHTML = `
+
+          <h3>
+            Pedido #${pedido.id.substring(0, 6).toUpperCase()}
+          </h3>
+
+          <strong>👤 ${pedido.nome}</strong>
+
+          <ul>
+            ${itens}
+          </ul>
+
+          <strong>
+            Total: R$ ${Number(pedido.total).toFixed(2).replace(".", ",")}
+          </strong>
+
+          <p>
+            Status atual:
+            <strong>${pedido.status}</strong>
+          </p>
+
+          <div class="botoes-status">
+
+            <button onclick="mudarStatus('${pedido.id}', 'RECEBIDO')">
+              RECEBIDO
+            </button>
+
+            <button onclick="mudarStatus('${pedido.id}', 'PREPARANDO')">
+              PREPARANDO
+            </button>
+
+            <button onclick="mudarStatus('${pedido.id}', 'PRONTO')">
+              PRONTO
+            </button>
+
+          </div>
+        `;
+
+        lista.appendChild(div);
+
+      });
+
+    });
+  }
+
+
+  window.mudarStatus = async function(id, status) {
+
+    try {
+
+      await update(
+        ref(db, "orders/" + id),
+        {
+          status: status
+        }
+      );
+
+    } catch (erro) {
+
+      console.error(erro);
+
+      alert("Não foi possível alterar o status.");
+
+    }
+  };
+
+
+  window.sairAdmin = async function() {
+
+    await signOut(auth);
+
+    location.reload();
+
+  };
+
+
+  /* ==============================
+     DETECTAR USUÁRIO
+     ============================== */
+
+  onAuthStateChanged(auth, user => {
+
+    if (!user) {
+
+      iniciarAluno();
+
+      return;
+    }
+
+    /*
+      Se tiver e-mail, é o usuário da cantina.
+      Se não tiver e-mail, é um aluno anônimo.
+    */
+
+    if (user.email) {
+
+      abrirPainelAdmin();
+
+    } else {
+
+      document.getElementById("areaAluno").style.display = "block";
+
+    }
+
+  });
+
+
+  /* ==============================
+     LOGIN DA CANTINA
+     ============================== */
+
+  const botaoAdmin = document.createElement("button");
+
+  botaoAdmin.textContent = "🔐 Área da Cantina";
+
+  botaoAdmin.style.cssText =
+    "display:block;margin:20px auto;background:#333;";
+
+  botaoAdmin.onclick = () => {
+
+    document.getElementById("areaAluno").style.display = "none";
+
+    document.getElementById("adminLogin").style.display = "block";
+
+  };
+
+  document.querySelector(".container").appendChild(botaoAdmin);
+
+
+  function mostrarErro(texto) {
+
+    const erro = document.getElementById("mensagemErro");
+
+    erro.textContent = texto;
+
+    erro.style.display = "block";
 
   }
 
-  function enviarPedido() {
 
-    const nome =
-      document.getElementById("nome").value.trim();
+  function esconderMensagens() {
 
-    if (carrinho.length === 0) {
+    document.getElementById("mensagemErro").style.display = "none";
 
-      alert("Adicione pelo menos um produto ao carrinho.");
-
-      return;
-    }
-
-    if (nome === "") {
-
-      alert("Digite seu nome antes de enviar o pedido.");
-
-      return;
-    }
-
-    const numero =
-      Math.floor(1000 + Math.random() * 9000);
-
-    document.getElementById("numeroPedido")
-      .textContent = "#" + numero;
-
-    document.getElementById("confirmacao")
-      .style.display = "block";
-
-    document.getElementById("status")
-      .style.display = "block";
-
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "smooth"
-    });
+    document.getElementById("mensagemSucesso").style.display = "none";
 
   }
 
@@ -544,4 +877,3 @@
 
 </body>
 </html>
-<!-- atualização do site -->
