@@ -1,553 +1,560 @@
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cantina Online</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cantina Online</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      color: #222;
-    }
-
-    header {
-      background: #ff7a00;
-      color: white;
-      padding: 22px 15px;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    header p {
-      margin: 7px 0 0;
-    }
-
-    .container {
-      max-width: 650px;
-      margin: auto;
-      padding: 18px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 14px;
-      padding: 18px;
-      margin-bottom: 18px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.08);
-    }
-
-    h2 {
-      margin-top: 0;
-    }
-
-    .produto {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      padding: 13px 0;
-      border-bottom: 1px solid #eee;
-    }
-
-    .produto:last-child {
-      border-bottom: none;
-    }
-
-    .produto-info strong {
-      display: block;
-      font-size: 17px;
-    }
-
-    .preco {
-      color: #ff6500;
-      font-weight: bold;
-      margin-top: 4px;
-    }
-
-    button {
-      border: none;
-      border-radius: 9px;
-      padding: 10px 14px;
-      background: #ff7a00;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:active {
-      transform: scale(.97);
-    }
-
-    .quantidade {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 8px 0;
-    }
-
-    .quantidade button {
-      padding: 6px 11px;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #ccc;
-      border-radius: 9px;
-      font-size: 16px;
-      margin-top: 7px;
-      margin-bottom: 12px;
-    }
-
-    .total {
-      font-size: 20px;
-      font-weight: bold;
-      text-align: right;
-      margin-top: 15px;
-    }
-
-    .enviar {
-      width: 100%;
-      font-size: 17px;
-      padding: 14px;
-      margin-top: 12px;
-    }
-
-    .status {
-      text-align: center;
-      padding: 15px;
-      border-radius: 10px;
-      background: #eee;
-      font-weight: bold;
-      margin-top: 12px;
-    }
-
-    .status.recebido {
-      background: #fff3cd;
-      color: #856404;
-    }
-
-    .status.preparando {
-      background: #ffe0bd;
-      color: #8a4200;
-    }
-
-    .status.pronto {
-      background: #d4edda;
-      color: #155724;
-    }
-
-    .pedido-numero {
-      text-align: center;
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .erro {
-      background: #f8d7da;
-      color: #721c24;
-      padding: 12px;
-      border-radius: 9px;
-      margin-top: 12px;
-      display: none;
-    }
-
-    .sucesso {
-      background: #d4edda;
-      color: #155724;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 12px;
-      display: none;
-    }
-
-    .admin {
-      display: none;
-    }
-
-    .pedido-admin {
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 15px;
-    }
-
-    .pedido-admin h3 {
-      margin-top: 0;
-    }
-
-    .botoes-status {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      margin-top: 12px;
-    }
-
-    .botoes-status button {
-      flex: 1;
-      min-width: 100px;
-    }
-
-    .pequeno {
-      font-size: 13px;
-      color: #666;
-    }
-
-    .topo-admin {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    #adminLogin {
-      display: none;
-    }
-  </style>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f5f5;
+  color:#222;
+}
+header{
+  background:#ff7a00;
+  color:white;
+  padding:22px;
+  text-align:center;
+}
+header h1{margin:0}
+.container{
+  max-width:700px;
+  margin:auto;
+  padding:20px;
+}
+.card{
+  background:white;
+  border-radius:15px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:0 2px 8px #ddd;
+}
+.produto{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.produto h3{margin:0 0 5px}
+.preco{
+  font-weight:bold;
+  color:#ff6500;
+}
+button{
+  border:0;
+  border-radius:10px;
+  padding:12px 16px;
+  background:#ff7a00;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:active{transform:scale(.97)}
+input{
+  width:100%;
+  padding:13px;
+  border:1px solid #ccc;
+  border-radius:10px;
+  margin:8px 0 15px;
+  font-size:16px;
+}
+#carrinho{
+  position:sticky;
+  bottom:10px;
+  z-index:5;
+}
+.item-carrinho{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 0;
+  border-bottom:1px solid #eee;
+}
+.qtd button{
+  padding:6px 10px;
+  margin:0 3px;
+}
+.total{
+  font-size:20px;
+  font-weight:bold;
+  margin-top:15px;
+}
+#mensagem{
+  padding:15px;
+  border-radius:10px;
+  margin-top:10px;
+  display:none;
+}
+.sucesso{
+  background:#d9ffd9;
+  color:#176b17;
+}
+.erro{
+  background:#ffdede;
+  color:#8b0000;
+}
+#adminArea,#adminLogin{
+  display:none;
+}
+.pedido{
+  border:1px solid #ddd;
+  border-radius:12px;
+  padding:15px;
+  margin:12px 0;
+}
+.status{
+  font-weight:bold;
+  margin:8px 0;
+}
+.status button{
+  margin:3px;
+  background:#333;
+}
+.pequeno{
+  font-size:13px;
+  color:#666;
+}
+</style>
 </head>
 
 <body>
 
 <header>
   <h1>🍔 Cantina Online</h1>
-  <p>Faça seu pedido sem enfrentar fila.</p>
+  <p>Faça seu pedido pelo celular</p>
 </header>
 
 <div class="container">
 
   <!-- ÁREA DO ALUNO -->
-  <section id="areaAluno">
+  <div id="areaAluno">
 
     <div class="card">
-      <h2>🍴 Cardápio</h2>
-
-      <div class="produto">
-        <div class="produto-info">
-          <strong>🥪 Sanduíche</strong>
-          <div class="preco">R$ 6,00</div>
-        </div>
-        <button onclick="adicionar('Sanduíche', 6)">Adicionar</button>
-      </div>
-
-      <div class="produto">
-        <div class="produto-info">
-          <strong>🌭 Cachorro-quente</strong>
-          <div class="preco">R$ 7,00</div>
-        </div>
-        <button onclick="adicionar('Cachorro-quente', 7)">Adicionar</button>
-      </div>
-
-      <div class="produto">
-        <div class="produto-info">
-          <strong>🍕 Pizza</strong>
-          <div class="preco">R$ 5,00</div>
-        </div>
-        <button onclick="adicionar('Pizza', 5)">Adicionar</button>
-      </div>
-
-      <div class="produto">
-        <div class="produto-info">
-          <strong>🥤 Refrigerante</strong>
-          <div class="preco">R$ 4,00</div>
-        </div>
-        <button onclick="adicionar('Refrigerante', 4)">Adicionar</button>
-      </div>
-
-      <div class="produto">
-        <div class="produto-info">
-          <strong>🧃 Suco</strong>
-          <div class="preco">R$ 3,50</div>
-        </div>
-        <button onclick="adicionar('Suco', 3.5)">Adicionar</button>
-      </div>
-
-      <div class="produto">
-        <div class="produto-info">
-          <strong>🍪 Biscoito</strong>
-          <div class="preco">R$ 2,50</div>
-        </div>
-        <button onclick="adicionar('Biscoito', 2.5)">Adicionar</button>
-      </div>
+      <h2>Seu nome</h2>
+      <input id="nomeAluno" type="text" placeholder="Digite seu nome">
     </div>
 
-    <div class="card">
+    <h2>Cardápio</h2>
+
+    <div id="produtos"></div>
+
+    <div class="card" id="carrinho">
       <h2>🛒 Seu pedido</h2>
 
-      <div id="carrinho">
+      <div id="itensCarrinho">
         <p>Nenhum produto adicionado.</p>
       </div>
 
       <div class="total">
         Total: R$ <span id="total">0,00</span>
       </div>
+
+      <br>
+
+      <button onclick="enviarPedido()" style="width:100%">
+        Enviar pedido
+      </button>
+
+      <div id="mensagem"></div>
     </div>
 
     <div class="card">
-      <h2>👤 Seus dados</h2>
+      <h2>📦 Acompanhar pedido</h2>
 
-      <label for="nome">Nome do aluno:</label>
-      <input id="nome" type="text" placeholder="Digite seu nome">
+      <input id="codigoPedido"
+             type="text"
+             placeholder="Digite o código do pedido">
 
-      <button class="enviar" onclick="enviarPedido()">
-        📤 Enviar pedido
+      <button onclick="acompanharPedido()" style="width:100%">
+        Acompanhar
       </button>
 
-      <div id="mensagemErro" class="erro"></div>
-      <div id="mensagemSucesso" class="sucesso"></div>
+      <div id="statusPedido"></div>
     </div>
 
-    <div id="acompanhar" class="card" style="display:none;">
-      <h2>📡 Acompanhar pedido</h2>
+    <button onclick="abrirLoginAdmin()"
+            style="display:block;margin:25px auto;background:#333">
+      🔐 Área da Cantina
+    </button>
 
-      <div class="pedido-numero">
-        Pedido #<span id="numeroPedido"></span>
-      </div>
-
-      <div id="statusPedido" class="status recebido">
-        RECEBIDO
-      </div>
-
-      <p style="text-align:center;">
-        Esta tela será atualizada quando a cantina mudar o status.
-      </p>
-    </div>
-
-  </section>
+  </div>
 
 
   <!-- LOGIN DA CANTINA -->
-  <section id="adminLogin" class="card">
+  <div id="adminLogin" class="card">
+
     <h2>🔐 Área da Cantina</h2>
 
-    <label>E-mail:</label>
-    <input id="adminEmail" type="email" placeholder="E-mail da cantina">
+    <input id="emailAdmin"
+           type="email"
+           placeholder="E-mail da cantina">
 
-    <label>Senha:</label>
-    <input id="adminSenha" type="password" placeholder="Senha">
+    <input id="senhaAdmin"
+           type="password"
+           placeholder="Senha">
 
-    <button class="enviar" onclick="entrarAdmin()">
+    <button onclick="entrarAdmin()" style="width:100%">
       Entrar
     </button>
 
-    <div id="erroLogin" class="erro"></div>
-  </section>
+    <br><br>
+
+    <button onclick="voltarAluno()"
+            style="width:100%;background:#666">
+      Voltar
+    </button>
+
+    <div id="erroLogin"></div>
+
+  </div>
 
 
-  <!-- PAINEL DA CANTINA -->
-  <section id="adminArea" class="admin">
+  <!-- ÁREA ADMIN -->
+  <div id="adminArea">
 
     <div class="card">
-      <div class="topo-admin">
-        <h2>📋 Pedidos</h2>
-        <button onclick="sairAdmin()">Sair</button>
-      </div>
+      <h2>👨‍🍳 Pedidos da Cantina</h2>
 
-      <div id="listaPedidos">
-        <p>Carregando pedidos...</p>
-      </div>
+      <button onclick="sairAdmin()"
+              style="background:#666">
+        Sair
+      </button>
     </div>
 
-  </section>
+    <div id="listaPedidos">
+      <p>Carregando pedidos...</p>
+    </div>
+
+  </div>
 
 </div>
 
 
 <script type="module">
 
-  import { initializeApp }
-    from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+/* ================================
+   FIREBASE
+================================ */
 
-  import {
-    getAuth,
-    signInAnonymously,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut
-  } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-  import {
-    getDatabase,
-    ref,
-    push,
-    set,
-    onValue,
-    update
-  } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-database.js";
+import {
+  getAuth,
+  signInAnonymously,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-
-  /* ==============================
-     CONFIGURAÇÃO DO FIREBASE
-     ============================== */
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCFNXgfbNFQ8GcX1vnbuw9FT0aXWxzrc34",
-    authDomain: "cantina-igreja-e5f29.firebaseapp.com",
-    projectId: "cantina-igreja-e5f29",
-    storageBucket: "cantina-igreja-e5f29.firebasestorage.app",
-    messagingSenderId: "432970369348",
-    appId: "1:432970369348:web:f3a0298f132e03e2d62f11",
-    measurementId: "G-ZXD631PL0M"
- https://cantina-igreja-e5f29-default-rtdb.europe-west1.firebasedatabase.app/"};
+import {
+  getDatabase,
+  ref,
+  push,
+  set,
+  onValue,
+  update
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getDatabase(app);
+const firebaseConfig = {
+  apiKey: "AIzaSyCFNXgfbNFQ8GcX1vnbuw9FT0aXWxzrc34",
+  authDomain: "cantina-igreja-e5f29.firebaseapp.com",
+  projectId: "cantina-igreja-e5f29",
+  storageBucket: "cantina-igreja-e5f29.firebasestorage.app",
+  messagingSenderId: "432970369348",
+  appId: "1:432970369348:web:f3a0298f132e03e2d62f11",
+  measurementId: "G-ZXD631PL0M",
+  databaseURL: "https://cantina-igreja-e5f29-default-rtdb.europe-west1.firebasedatabase.app/"
+};
 
 
-  /* ==============================
-     CARRINHO
-     ============================== */
-
-  let carrinho = [];
-
-  window.adicionar = function(nome, preco) {
-
-    const existente = carrinho.find(item => item.nome === nome);
-
-    if (existente) {
-      existente.quantidade++;
-    } else {
-      carrinho.push({
-        nome: nome,
-        preco: preco,
-        quantidade: 1
-      });
-    }
-
-    atualizarCarrinho();
-  };
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
 
 
-  window.alterarQuantidade = function(nome, valor) {
+/* ================================
+   CARDÁPIO
+================================ */
 
-    const item = carrinho.find(item => item.nome === nome);
+const produtos = [
 
-    if (!item) return;
+  {
+    id:"coxinha",
+    nome:"Coxinha",
+    preco:5.00
+  },
 
-    item.quantidade += valor;
+  {
+    id:"pastel",
+    nome:"Pastel",
+    preco:5.00
+  },
 
-    if (item.quantidade <= 0) {
-      carrinho = carrinho.filter(item => item.nome !== nome);
-    }
+  {
+    id:"cachorro",
+    nome:"Cachorro-quente",
+    preco:6.00
+  },
 
-    atualizarCarrinho();
-  };
+  {
+    id:"hamburguer",
+    nome:"Hambúrguer",
+    preco:8.00
+  },
+
+  {
+    id:"pizza",
+    nome:"Pizza",
+    preco:6.00
+  },
+
+  {
+    id:"refrigerante",
+    nome:"Refrigerante",
+    preco:5.00
+  },
+
+  {
+    id:"suco",
+    nome:"Suco",
+    preco:4.00
+  },
+
+  {
+    id:"agua",
+    nome:"Água",
+    preco:2.00
+  }
+
+];
 
 
-  function atualizarCarrinho() {
+/* ================================
+   CARRINHO
+================================ */
 
-    const elemento = document.getElementById("carrinho");
-    const totalElemento = document.getElementById("total");
+let carrinho = {};
 
-    if (carrinho.length === 0) {
-      elemento.innerHTML = "<p>Nenhum produto adicionado.</p>";
-      totalElemento.textContent = "0,00";
-      return;
-    }
 
-    let total = 0;
+function mostrarProdutos(){
 
-    elemento.innerHTML = "";
+  const area = document.getElementById("produtos");
 
-    carrinho.forEach(item => {
+  area.innerHTML = "";
 
-      const subtotal = item.preco * item.quantidade;
-      total += subtotal;
+  produtos.forEach(produto => {
 
-      const div = document.createElement("div");
+    const div = document.createElement("div");
 
-      div.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-          <div>
-            <strong>${item.nome}</strong>
-            <br>
-            R$ ${subtotal.toFixed(2).replace(".", ",")}
-          </div>
+    div.className = "card";
 
-          <div class="quantidade">
-            <button onclick="alterarQuantidade('${item.nome}', -1)">−</button>
-            <strong>${item.quantidade}</strong>
-            <button onclick="alterarQuantidade('${item.nome}', 1)">+</button>
-          </div>
+    div.innerHTML = `
+      <div class="produto">
+
+        <div>
+          <h3>${produto.nome}</h3>
+          <span class="preco">
+            R$ ${produto.preco.toFixed(2).replace(".",",")}
+          </span>
         </div>
-      `;
 
-      elemento.appendChild(div);
-    });
+        <button onclick="adicionar('${produto.id}')">
+          + Adicionar
+        </button>
 
-    totalElemento.textContent = total.toFixed(2).replace(".", ",");
+      </div>
+    `;
+
+    area.appendChild(div);
+
+  });
+
+}
+
+
+window.adicionar = function(id){
+
+  if(!carrinho[id]){
+    carrinho[id] = 0;
+  }
+
+  carrinho[id]++;
+
+  atualizarCarrinho();
+
+};
+
+
+window.remover = function(id){
+
+  if(!carrinho[id]) return;
+
+  carrinho[id]--;
+
+  if(carrinho[id] <= 0){
+    delete carrinho[id];
+  }
+
+  atualizarCarrinho();
+
+};
+
+
+function atualizarCarrinho(){
+
+  const area =
+    document.getElementById("itensCarrinho");
+
+  area.innerHTML = "";
+
+  let total = 0;
+
+  const ids = Object.keys(carrinho);
+
+  if(ids.length === 0){
+
+    area.innerHTML =
+      "<p>Nenhum produto adicionado.</p>";
+
+    document.getElementById("total").textContent =
+      "0,00";
+
+    return;
+
   }
 
 
-  /* ==============================
-     LOGIN DO ALUNO
-     ============================== */
+  ids.forEach(id => {
 
-  async function iniciarAluno() {
+    const produto =
+      produtos.find(p => p.id === id);
 
-    try {
+    const quantidade =
+      carrinho[id];
 
-      if (!auth.currentUser) {
-        await signInAnonymously(auth);
-      }
+    const subtotal =
+      produto.preco * quantidade;
 
-    } catch (erro) {
+    total += subtotal;
 
-      console.error(erro);
 
-      mostrarErro(
-        "Não foi possível conectar ao Firebase. Verifique se o login Anônimo está ativado."
-      );
+    const div =
+      document.createElement("div");
 
-    }
+    div.className = "item-carrinho";
+
+    div.innerHTML = `
+
+      <div>
+        <b>${produto.nome}</b><br>
+        R$ ${subtotal.toFixed(2).replace(".",",")}
+      </div>
+
+      <div class="qtd">
+
+        <button onclick="remover('${id}')">
+          −
+        </button>
+
+        <b>${quantidade}</b>
+
+        <button onclick="adicionar('${id}')">
+          +
+        </button>
+
+      </div>
+
+    `;
+
+    area.appendChild(div);
+
+  });
+
+
+  document.getElementById("total").textContent =
+    total.toFixed(2).replace(".",",");
+
+}
+
+
+/* ================================
+   ENVIAR PEDIDO
+================================ */
+
+window.enviarPedido = async function(){
+
+  const nome =
+    document.getElementById("nomeAluno").value.trim();
+
+  if(!nome){
+
+    mostrarMensagem(
+      "Digite seu nome primeiro.",
+      false
+    );
+
+    return;
   }
 
 
-  /* ==============================
-     ENVIAR PEDIDO
-     ============================== */
+  if(Object.keys(carrinho).length === 0){
 
-  window.enviarPedido = async function() {
+    mostrarMensagem(
+      "Adicione pelo menos um produto.",
+      false
+    );
 
-    const nome = document.getElementById("nome").value.trim();
+    return;
+  }
 
-    esconderMensagens();
 
-    if (!nome) {
-      mostrarErro("Digite seu nome antes de enviar o pedido.");
-      return;
+  try{
+
+    if(!auth.currentUser){
+
+      await signInAnonymously(auth);
+
     }
 
-    if (carrinho.length === 0) {
-      mostrarErro("Adicione pelo menos um produto.");
-      return;
-    }
 
-    if (!auth.currentUser) {
-      mostrarErro("Conectando ao sistema. Tente novamente em alguns segundos.");
-      return;
-    }
+    const pedidoRef =
+      push(ref(db,"orders"));
+
+    const itens = [];
 
     let total = 0;
 
-    carrinho.forEach(item => {
-      total += item.preco * item.quantidade;
+
+    Object.keys(carrinho).forEach(id => {
+
+      const produto =
+        produtos.find(p => p.id === id);
+
+      const quantidade =
+        carrinho[id];
+
+      itens.push({
+
+        nome: produto.nome,
+
+        quantidade: quantidade,
+
+        preco: produto.preco
+
+      });
+
+      total +=
+        produto.preco * quantidade;
+
     });
 
-    const pedidoRef = push(ref(db, "orders"));
 
     const pedido = {
 
@@ -555,11 +562,7 @@
 
       nome: nome,
 
-      itens: carrinho.map(item => ({
-        nome: item.nome,
-        preco: item.preco,
-        quantidade: item.quantidade
-      })),
+      itens: itens,
 
       total: total,
 
@@ -569,309 +572,407 @@
 
     };
 
-    try {
 
-      await set(pedidoRef, pedido);
-
-      document.getElementById("mensagemSucesso").style.display = "block";
-
-      document.getElementById("mensagemSucesso").innerHTML =
-        "✅ Pedido enviado com sucesso!";
-
-      document.getElementById("numeroPedido").textContent =
-        pedidoRef.key.substring(0, 6).toUpperCase();
-
-      document.getElementById("acompanhar").style.display = "block";
-
-      acompanharPedido(pedidoRef.key);
-
-      carrinho = [];
-
-      atualizarCarrinho();
-
-    } catch (erro) {
-
-      console.error(erro);
-
-      mostrarErro(
-        "Não foi possível enviar o pedido. Verifique as regras do Firebase."
-      );
-    }
-  };
+    await set(pedidoRef,pedido);
 
 
-  /* ==============================
-     ACOMPANHAR PEDIDO
-     ============================== */
+    const codigo = pedidoRef.key;
 
-  function acompanharPedido(id) {
 
-    const pedidoRef = ref(db, "orders/" + id);
+    document.getElementById("codigoPedido").value =
+      codigo;
 
-    onValue(pedidoRef, snapshot => {
 
-      const pedido = snapshot.val();
+    mostrarMensagem(
+      "Pedido enviado! Código: " + codigo,
+      true
+    );
 
-      if (!pedido) return;
 
-      const status = pedido.status || "RECEBIDO";
+    carrinho = {};
 
-      const elemento = document.getElementById("statusPedido");
+    atualizarCarrinho();
 
-      elemento.textContent = status;
+    acompanharPedido();
 
-      elemento.className = "status " + status.toLowerCase();
 
-    });
+  }catch(error){
+
+    console.error(error);
+
+    mostrarMensagem(
+      "Não foi possível enviar o pedido. Verifique o Firebase.",
+      false
+    );
+
+  }
+
+};
+
+
+/* ================================
+   ACOMPANHAR PEDIDO
+================================ */
+
+window.acompanharPedido = function(){
+
+  const codigo =
+    document.getElementById("codigoPedido")
+    .value.trim();
+
+  if(!codigo){
+
+    document.getElementById("statusPedido").innerHTML =
+      "<p>Digite o código do pedido.</p>";
+
+    return;
+
   }
 
 
-  /* ==============================
-     LOGIN DA CANTINA
-     ============================== */
+  const pedidoRef =
+    ref(db,"orders/" + codigo);
 
-  window.entrarAdmin = async function() {
 
-    const email = document.getElementById("adminEmail").value.trim();
-    const senha = document.getElementById("adminSenha").value;
+  onValue(pedidoRef,(snapshot)=>{
 
-    document.getElementById("erroLogin").style.display = "none";
+    if(!snapshot.exists()){
 
-    if (!email || !senha) {
-
-      document.getElementById("erroLogin").textContent =
-        "Digite o e-mail e a senha.";
-
-      document.getElementById("erroLogin").style.display = "block";
+      document.getElementById("statusPedido").innerHTML =
+        "<p>Pedido não encontrado.</p>";
 
       return;
+
     }
 
-    try {
 
-      await signInWithEmailAndPassword(auth, email, senha);
-
-    } catch (erro) {
-
-      console.error(erro);
-
-      document.getElementById("erroLogin").textContent =
-        "E-mail ou senha incorretos.";
-
-      document.getElementById("erroLogin").style.display = "block";
-    }
-  };
+    const pedido =
+      snapshot.val();
 
 
-  /* ==============================
-     PAINEL DA CANTINA
-     ============================== */
+    document.getElementById("statusPedido").innerHTML = `
 
-  function abrirPainelAdmin() {
+      <div class="card">
 
-    document.getElementById("areaAluno").style.display = "none";
+        <h3>Pedido de ${pedido.nome}</h3>
 
-    document.getElementById("adminLogin").style.display = "none";
+        <p>
+          <b>Status:</b>
+          ${pedido.status}
+        </p>
 
-    document.getElementById("adminArea").style.display = "block";
+        ${
+          pedido.status === "PRONTO"
+          ? "<h3>✅ Seu pedido está pronto!</h3>"
+          : ""
+        }
 
-    carregarPedidos();
+      </div>
+
+    `;
+
+  });
+
+};
+
+
+/* ================================
+   MENSAGENS
+================================ */
+
+function mostrarMensagem(texto, sucesso){
+
+  const div =
+    document.getElementById("mensagem");
+
+  div.style.display = "block";
+
+  div.className =
+    sucesso ? "sucesso" : "erro";
+
+  div.textContent = texto;
+
+}
+
+
+/* ================================
+   ADMIN
+================================ */
+
+window.abrirLoginAdmin = function(){
+
+  document.getElementById("areaAluno")
+    .style.display = "none";
+
+  document.getElementById("adminLogin")
+    .style.display = "block";
+
+};
+
+
+window.voltarAluno = function(){
+
+  document.getElementById("adminLogin")
+    .style.display = "none";
+
+  document.getElementById("adminArea")
+    .style.display = "none";
+
+  document.getElementById("areaAluno")
+    .style.display = "block";
+
+};
+
+
+window.entrarAdmin = async function(){
+
+  const email =
+    document.getElementById("emailAdmin").value.trim();
+
+  const senha =
+    document.getElementById("senhaAdmin").value;
+
+
+  if(!email || !senha){
+
+    document.getElementById("erroLogin").innerHTML =
+      "<p>Digite o e-mail e a senha.</p>";
+
+    return;
+
   }
 
 
-  function carregarPedidos() {
+  try{
 
-    const pedidosRef = ref(db, "orders");
-
-    onValue(pedidosRef, snapshot => {
-
-      const dados = snapshot.val();
-
-      const lista = document.getElementById("listaPedidos");
-
-      lista.innerHTML = "";
-
-      if (!dados) {
-
-        lista.innerHTML = "<p>Nenhum pedido recebido.</p>";
-
-        return;
-      }
-
-      const pedidos = Object.entries(dados)
-        .map(([id, pedido]) => ({
-          id,
-          ...pedido
-        }))
-        .sort((a, b) => b.criadoEm - a.criadoEm);
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      senha
+    );
 
 
-      pedidos.forEach(pedido => {
+    document.getElementById("adminLogin")
+      .style.display = "none";
 
-        const div = document.createElement("div");
+    document.getElementById("areaAluno")
+      .style.display = "none";
 
-        div.className = "pedido-admin";
+    document.getElementById("adminArea")
+      .style.display = "block";
 
-        let itens = "";
+
+    carregarPedidos();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    document.getElementById("erroLogin").innerHTML =
+      "<p>❌ E-mail ou senha incorretos.</p>";
+
+  }
+
+};
+
+
+/* ================================
+   CARREGAR PEDIDOS
+================================ */
+
+function carregarPedidos(){
+
+  const pedidosRef =
+    ref(db,"orders");
+
+
+  onValue(pedidosRef,(snapshot)=>{
+
+    const area =
+      document.getElementById("listaPedidos");
+
+    area.innerHTML = "";
+
+
+    if(!snapshot.exists()){
+
+      area.innerHTML =
+        "<p>Nenhum pedido ainda.</p>";
+
+      return;
+
+    }
+
+
+    const dados =
+      snapshot.val();
+
+
+    const lista =
+      Object.entries(dados).reverse();
+
+
+    lista.forEach(([id,pedido])=>{
+
+      const div =
+        document.createElement("div");
+
+      div.className = "pedido";
+
+
+      let itensHTML = "";
+
+
+      if(pedido.itens){
 
         pedido.itens.forEach(item => {
 
-          itens += `
+          itensHTML += `
             <li>
-              ${item.quantidade}x ${item.nome}
+              ${item.quantidade}x
+              ${item.nome}
             </li>
           `;
 
         });
 
+      }
 
-        div.innerHTML = `
 
-          <h3>
-            Pedido #${pedido.id.substring(0, 6).toUpperCase()}
-          </h3>
+      div.innerHTML = `
 
-          <strong>👤 ${pedido.nome}</strong>
+        <h3>👤 ${pedido.nome}</h3>
 
-          <ul>
-            ${itens}
-          </ul>
+        <p class="pequeno">
+          Código: ${id}
+        </p>
 
-          <strong>
-            Total: R$ ${Number(pedido.total).toFixed(2).replace(".", ",")}
-          </strong>
+        <p>
+          <b>Itens:</b>
+        </p>
 
-          <p>
-            Status atual:
-            <strong>${pedido.status}</strong>
-          </p>
+        <ul>
+          ${itensHTML}
+        </ul>
 
-          <div class="botoes-status">
+        <p>
+          <b>Total:</b>
+          R$ ${Number(pedido.total)
+            .toFixed(2)
+            .replace(".",",")}
+        </p>
 
-            <button onclick="mudarStatus('${pedido.id}', 'RECEBIDO')">
-              RECEBIDO
-            </button>
+        <p class="status">
+          Status: ${pedido.status}
+        </p>
 
-            <button onclick="mudarStatus('${pedido.id}', 'PREPARANDO')">
-              PREPARANDO
-            </button>
+        <button onclick="mudarStatus('${id}','RECEBIDO')">
+          RECEBIDO
+        </button>
 
-            <button onclick="mudarStatus('${pedido.id}', 'PRONTO')">
-              PRONTO
-            </button>
+        <button onclick="mudarStatus('${id}','PREPARANDO')">
+          PREPARANDO
+        </button>
 
-          </div>
-        `;
+        <button onclick="mudarStatus('${id}','PRONTO')">
+          PRONTO
+        </button>
 
-        lista.appendChild(div);
+      `;
 
-      });
+
+      area.appendChild(div);
 
     });
-  }
-
-
-  window.mudarStatus = async function(id, status) {
-
-    try {
-
-      await update(
-        ref(db, "orders/" + id),
-        {
-          status: status
-        }
-      );
-
-    } catch (erro) {
-
-      console.error(erro);
-
-      alert("Não foi possível alterar o status.");
-
-    }
-  };
-
-
-  window.sairAdmin = async function() {
-
-    await signOut(auth);
-
-    location.reload();
-
-  };
-
-
-  /* ==============================
-     DETECTAR USUÁRIO
-     ============================== */
-
-  onAuthStateChanged(auth, user => {
-
-    if (!user) {
-
-      iniciarAluno();
-
-      return;
-    }
-
-    /*
-      Se tiver e-mail, é o usuário da cantina.
-      Se não tiver e-mail, é um aluno anônimo.
-    */
-
-    if (user.email) {
-
-      abrirPainelAdmin();
-
-    } else {
-
-      document.getElementById("areaAluno").style.display = "block";
-
-    }
 
   });
 
-
-  /* ==============================
-     LOGIN DA CANTINA
-     ============================== */
-
-  const botaoAdmin = document.createElement("button");
-
-  botaoAdmin.textContent = "🔐 Área da Cantina";
-
-  botaoAdmin.style.cssText =
-    "display:block;margin:20px auto;background:#333;";
-
-  botaoAdmin.onclick = () => {
-
-    document.getElementById("areaAluno").style.display = "none";
-
-    document.getElementById("adminLogin").style.display = "block";
-
-  };
-
-  document.querySelector(".container").appendChild(botaoAdmin);
+}
 
 
-  function mostrarErro(texto) {
+/* ================================
+   ALTERAR STATUS
+================================ */
 
-    const erro = document.getElementById("mensagemErro");
+window.mudarStatus = async function(id,status){
 
-    erro.textContent = texto;
+  try{
 
-    erro.style.display = "block";
+    await update(
+      ref(db,"orders/" + id),
+      {
+        status: status
+      }
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Não foi possível alterar o status."
+    );
 
   }
 
+};
 
-  function esconderMensagens() {
 
-    document.getElementById("mensagemErro").style.display = "none";
+/* ================================
+   SAIR
+================================ */
 
-    document.getElementById("mensagemSucesso").style.display = "none";
+window.sairAdmin = async function(){
+
+  await signOut(auth);
+
+  document.getElementById("adminArea")
+    .style.display = "none";
+
+  document.getElementById("areaAluno")
+    .style.display = "block";
+
+};
+
+
+/* ================================
+   INICIAR
+================================ */
+
+mostrarProdutos();
+
+atualizarCarrinho();
+
+
+/*
+   NÃO faz login de administrador
+   automaticamente.
+
+   O aluno usa login anônimo.
+*/
+
+onAuthStateChanged(auth,(user)=>{
+
+  if(user && user.email){
+
+    // Usuário administrador
+
+    document.getElementById("areaAluno")
+      .style.display = "none";
+
+    document.getElementById("adminLogin")
+      .style.display = "none";
+
+    document.getElementById("adminArea")
+      .style.display = "block";
+
+    carregarPedidos();
 
   }
+
+});
+
 
 </script>
 
