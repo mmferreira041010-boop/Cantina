@@ -4,977 +4,316 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cantina Online</title>
-
 <style>
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f5f5f5;
-  color:#222;
-}
-header{
-  background:#ff7a00;
-  color:white;
-  padding:22px;
-  text-align:center;
-}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5;color:#222}
+header{background:#ff7a00;color:white;padding:22px;text-align:center}
 header h1{margin:0}
-.container{
-  max-width:700px;
-  margin:auto;
-  padding:20px;
-}
-.card{
-  background:white;
-  border-radius:15px;
-  padding:18px;
-  margin-bottom:15px;
-  box-shadow:0 2px 8px #ddd;
-}
-.produto{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-.produto h3{margin:0 0 5px}
-.preco{
-  font-weight:bold;
-  color:#ff6500;
-}
-button{
-  border:0;
-  border-radius:10px;
-  padding:12px 16px;
-  background:#ff7a00;
-  color:white;
-  font-weight:bold;
-  cursor:pointer;
-}
+.container{max-width:700px;margin:auto;padding:20px}
+.card{background:white;border-radius:15px;padding:18px;margin-bottom:15px;box-shadow:0 2px 8px #ddd}
+.produto{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.produto h3{margin:0 0 5px}.preco{font-weight:bold;color:#ff6500}
+button{border:0;border-radius:10px;padding:12px 16px;background:#ff7a00;color:white;font-weight:bold;cursor:pointer}
 button:active{transform:scale(.97)}
-input{
-  width:100%;
-  padding:13px;
-  border:1px solid #ccc;
-  border-radius:10px;
-  margin:8px 0 15px;
-  font-size:16px;
-}
-#carrinho{
-  position:sticky;
-  bottom:10px;
-  z-index:5;
-}
-.item-carrinho{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:8px 0;
-  border-bottom:1px solid #eee;
-}
-.qtd button{
-  padding:6px 10px;
-  margin:0 3px;
-}
-.total{
-  font-size:20px;
-  font-weight:bold;
-  margin-top:15px;
-}
-#mensagem{
-  padding:15px;
-  border-radius:10px;
-  margin-top:10px;
-  display:none;
-}
-.sucesso{
-  background:#d9ffd9;
-  color:#176b17;
-}
-.erro{
-  background:#ffdede;
-  color:#8b0000;
-}
-#adminArea,#adminLogin{
-  display:none;
-}
-.pedido{
-  border:1px solid #ddd;
-  border-radius:12px;
-  padding:15px;
-  margin:12px 0;
-}
-.status{
-  font-weight:bold;
-  margin:8px 0;
-}
-.status button{
-  margin:3px;
-  background:#333;
-}
-.pequeno{
-  font-size:13px;
-  color:#666;
-}
+input{width:100%;padding:13px;border:1px solid #ccc;border-radius:10px;margin:8px 0 15px;font-size:16px}
+#carrinho{position:sticky;bottom:10px;z-index:5}
+.item-carrinho{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #eee}
+.qtd button{padding:6px 10px;margin:0 3px}.total{font-size:20px;font-weight:bold;margin-top:15px}
+#mensagem{padding:15px;border-radius:10px;margin-top:10px;display:none}
+.sucesso{background:#d9ffd9;color:#176b17}.erro{background:#ffdede;color:#8b0000}
+#adminArea,#adminLogin{display:none}.pedido{border:1px solid #ddd;border-radius:12px;padding:15px;margin:12px 0}
+.status{font-weight:bold;margin:8px 0}.status button{margin:3px;background:#333}
+.pequeno{font-size:13px;color:#666}
+.admin-produto{display:flex;gap:8px;align-items:center;margin:8px 0;padding:10px;border:1px solid #eee;border-radius:10px}
+.admin-produto input{margin:0}.admin-produto .nome{flex:1}.admin-produto .preco-input{width:100px}
+.btn-cinza{background:#666}.btn-vermelho{background:#b00020}
 </style>
 </head>
-
 <body>
 
 <header>
-  <h1>🍔 Cantina Online</h1>
-  <p>Faça seu pedido pelo celular</p>
+<h1>🍔 Cantina Online</h1>
+<p>Faça seu pedido pelo celular</p>
 </header>
 
 <div class="container">
 
-  <!-- ÁREA DO ALUNO -->
-  <div id="areaAluno">
+<div id="areaAluno">
+<div class="card">
+<h2>Seu nome</h2>
+<input id="nomeAluno" type="text" placeholder="Digite seu nome">
+</div>
 
-    <div class="card">
-      <h2>Seu nome</h2>
-      <input id="nomeAluno" type="text" placeholder="Digite seu nome">
-    </div>
+<h2>Cardápio</h2>
+<div id="produtos"><p>Carregando cardápio...</p></div>
 
-    <h2>Cardápio</h2>
+<div class="card" id="carrinho">
+<h2>🛒 Seu pedido</h2>
+<div id="itensCarrinho"><p>Nenhum produto adicionado.</p></div>
+<div class="total">Total: R$ <span id="total">0,00</span></div>
+<br>
+<button onclick="enviarPedido()" style="width:100%">Enviar pedido</button>
+<div id="mensagem"></div>
+</div>
 
-    <div id="produtos"></div>
+<div class="card">
+<h2>📦 Acompanhar pedido</h2>
+<input id="codigoPedido" type="text" placeholder="Digite o código do pedido">
+<button onclick="acompanharPedido()" style="width:100%">Acompanhar</button>
+<div id="statusPedido"></div>
+</div>
 
-    <div class="card" id="carrinho">
-      <h2>🛒 Seu pedido</h2>
+<button onclick="abrirLoginAdmin()" style="display:block;margin:25px auto;background:#333">
+🔐 Área da Cantina
+</button>
+</div>
 
-      <div id="itensCarrinho">
-        <p>Nenhum produto adicionado.</p>
-      </div>
+<div id="adminLogin" class="card">
+<h2>🔐 Área da Cantina</h2>
+<input id="emailAdmin" type="email" placeholder="E-mail da cantina">
+<input id="senhaAdmin" type="password" placeholder="Senha">
+<button onclick="entrarAdmin()" style="width:100%">Entrar</button>
+<br><br>
+<button onclick="voltarAluno()" style="width:100%;background:#666">Voltar</button>
+<div id="erroLogin"></div>
+</div>
 
-      <div class="total">
-        Total: R$ <span id="total">0,00</span>
-      </div>
+<div id="adminArea">
+<div class="card">
+<h2>👨‍🍳 Painel da Cantina</h2>
+<p class="pequeno">Aqui você pode mudar o cardápio e acompanhar os pedidos.</p>
+<button onclick="sairAdmin()" style="background:#666">Sair</button>
+</div>
 
-      <br>
+<div class="card">
+<h2>🍔 Editar cardápio</h2>
+<div id="adminProdutos"><p>Carregando...</p></div>
+<button onclick="adicionarProduto()" style="width:100%">➕ Adicionar produto</button>
+<button onclick="salvarCardapio()" style="width:100%;margin-top:10px">💾 Salvar cardápio</button>
+<div id="msgCardapio"></div>
+</div>
 
-      <button onclick="enviarPedido()" style="width:100%">
-        Enviar pedido
-      </button>
-
-      <div id="mensagem"></div>
-    </div>
-
-    <div class="card">
-      <h2>📦 Acompanhar pedido</h2>
-
-      <input id="codigoPedido"
-             type="text"
-             placeholder="Digite o código do pedido">
-
-      <button onclick="acompanharPedido()" style="width:100%">
-        Acompanhar
-      </button>
-
-      <div id="statusPedido"></div>
-    </div>
-
-    <button onclick="abrirLoginAdmin()"
-            style="display:block;margin:25px auto;background:#333">
-      🔐 Área da Cantina
-    </button>
-
-  </div>
-
-
-  <!-- LOGIN DA CANTINA -->
-  <div id="adminLogin" class="card">
-
-    <h2>🔐 Área da Cantina</h2>
-
-    <input id="emailAdmin"
-           type="email"
-           placeholder="E-mail da cantina">
-
-    <input id="senhaAdmin"
-           type="password"
-           placeholder="Senha">
-
-    <button onclick="entrarAdmin()" style="width:100%">
-      Entrar
-    </button>
-
-    <br><br>
-
-    <button onclick="voltarAluno()"
-            style="width:100%;background:#666">
-      Voltar
-    </button>
-
-    <div id="erroLogin"></div>
-
-  </div>
-
-
-  <!-- ÁREA ADMIN -->
-  <div id="adminArea">
-
-    <div class="card">
-      <h2>👨‍🍳 Pedidos da Cantina</h2>
-
-      <button onclick="sairAdmin()"
-              style="background:#666">
-        Sair
-      </button>
-    </div>
-
-    <div id="listaPedidos">
-      <p>Carregando pedidos...</p>
-    </div>
-
-  </div>
+<h2>📋 Pedidos</h2>
+<div id="listaPedidos"><p>Carregando pedidos...</p></div>
+</div>
 
 </div>
 
-
 <script type="module">
-
-/* ================================
-   FIREBASE
-================================ */
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
-  getAuth,
-  signInAnonymously,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
+getAuth,signInAnonymously,signInWithEmailAndPassword,signOut,onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import {
-  getDatabase,
-  ref,
-  push,
-  set,
-  onValue,
-  update
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+getDatabase,ref,push,set,onValue,update,get
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCFNXgfbNFQ8GcX1vnbuw9FT0aXWxzrc34",
-  authDomain: "cantina-igreja-e5f29.firebaseapp.com",
-  projectId: "cantina-igreja-e5f29",
-  storageBucket: "cantina-igreja-e5f29.firebasestorage.app",
-  messagingSenderId: "432970369348",
-  appId: "1:432970369348:web:f3a0298f132e03e2d62f11",
-  measurementId: "G-ZXD631PL0M",
-  databaseURL: "https://cantina-igreja-e5f29-default-rtdb.europe-west1.firebasedatabase.app/"
+const firebaseConfig={
+apiKey:"AIzaSyCFNXgbNFQ8GcX1vnbuw9FT0aXWxzrc34",
+authDomain:"cantina-igreja-e5f29.firebaseapp.com",
+projectId:"cantina-igreja-e5f29",
+storageBucket:"cantina-igreja-e5f29.firebasestorage.app",
+messagingSenderId:"432970369348",
+appId:"1:432970369348:web:f3a0298f132e03e2d62f11",
+measurementId:"G-ZXD631PL0M",
+databaseURL:"https://cantina-igreja-e5f29-default-rtdb.europe-west1.firebasedatabase.app/"
 };
 
+const ADMIN_EMAIL="cantinaadai@gmail.com";
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getDatabase(app);
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-
-
-/* ================================
-   CARDÁPIO
-================================ */
-
-const produtos = [
-
-  {
-    id:"coxinha",
-    nome:"Coxinha",
-    preco:5.00
-  },
-
-  {
-    id:"pastel",
-    nome:"Pastel",
-    preco:5.00
-  },
-
-  {
-    id:"cachorro",
-    nome:"Cachorro-quente",
-    preco:6.00
-  },
-
-  {
-    id:"hamburguer",
-    nome:"Hambúrguer",
-    preco:8.00
-  },
-
-  {
-    id:"pizza",
-    nome:"Pizza",
-    preco:6.00
-  },
-
-  {
-    id:"refrigerante",
-    nome:"Refrigerante",
-    preco:5.00
-  },
-
-  {
-    id:"suco",
-    nome:"Suco",
-    preco:4.00
-  },
-
-  {
-    id:"agua",
-    nome:"Água",
-    preco:2.00
-  }
-
+const cardapioPadrao=[
+{id:"coxinha",nome:"Coxinha",preco:5},
+{id:"pastel",nome:"Pastel",preco:5},
+{id:"cachorro",nome:"Cachorro-quente",preco:6},
+{id:"hamburguer",nome:"Hambúrguer",preco:8},
+{id:"pizza",nome:"Pizza",preco:6},
+{id:"refrigerante",nome:"Refrigerante",preco:5},
+{id:"suco",nome:"Suco",preco:4},
+{id:"agua",nome:"Água",preco:2}
 ];
 
+let produtos=[];
+let carrinho={};
+let listenerPedido=null;
+let listenerPedidosAdmin=null;
 
-/* ================================
-   CARRINHO
-================================ */
+function dinheiro(v){return Number(v).toFixed(2).replace(".",",")}
+function idProduto(nome){return String(nome).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||("produto-"+Date.now())}
 
-let carrinho = {};
-
+async function iniciar(){
+try{
+if(!auth.currentUser) await signInAnonymously(auth);
+const snap=await get(ref(db,"menu"));
+if(snap.exists()){
+produtos=Object.values(snap.val());
+}else{
+produtos=cardapioPadrao;
+try{await set(ref(db,"menu"),Object.fromEntries(produtos.map(p=>[p.id,p])))}catch(e){}
+}
+}catch(e){
+console.error(e);
+produtos=cardapioPadrao;
+}
+mostrarProdutos();
+atualizarCarrinho();
+}
+iniciar();
 
 function mostrarProdutos(){
-
-  const area = document.getElementById("produtos");
-
-  area.innerHTML = "";
-
-  produtos.forEach(produto => {
-
-    const div = document.createElement("div");
-
-    div.className = "card";
-
-    div.innerHTML = `
-      <div class="produto">
-
-        <div>
-          <h3>${produto.nome}</h3>
-          <span class="preco">
-            R$ ${produto.preco.toFixed(2).replace(".",",")}
-          </span>
-        </div>
-
-        <button onclick="adicionar('${produto.id}')">
-          + Adicionar
-        </button>
-
-      </div>
-    `;
-
-    area.appendChild(div);
-
-  });
-
+const area=document.getElementById("produtos");
+area.innerHTML="";
+produtos.forEach(p=>{
+const div=document.createElement("div");
+div.className="card";
+div.innerHTML=`<div class="produto"><div><h3>${escapeHtml(p.nome)}</h3><span class="preco">R$ ${dinheiro(p.preco)}</span></div><button onclick="adicionar('${p.id}')">+ Adicionar</button></div>`;
+area.appendChild(div);
+});
 }
+function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 
-
-window.adicionar = function(id){
-
-  if(!carrinho[id]){
-    carrinho[id] = 0;
-  }
-
-  carrinho[id]++;
-
-  atualizarCarrinho();
-
-};
-
-
-window.remover = function(id){
-
-  if(!carrinho[id]) return;
-
-  carrinho[id]--;
-
-  if(carrinho[id] <= 0){
-    delete carrinho[id];
-  }
-
-  atualizarCarrinho();
-
-};
-
+window.adicionar=id=>{carrinho[id]=(carrinho[id]||0)+1;atualizarCarrinho()}
+window.remover=id=>{if(!carrinho[id])return;carrinho[id]--;if(carrinho[id]<=0)delete carrinho[id];atualizarCarrinho()}
 
 function atualizarCarrinho(){
-
-  const area =
-    document.getElementById("itensCarrinho");
-
-  area.innerHTML = "";
-
-  let total = 0;
-
-  const ids = Object.keys(carrinho);
-
-  if(ids.length === 0){
-
-    area.innerHTML =
-      "<p>Nenhum produto adicionado.</p>";
-
-    document.getElementById("total").textContent =
-      "0,00";
-
-    return;
-
-  }
-
-
-  ids.forEach(id => {
-
-    const produto =
-      produtos.find(p => p.id === id);
-
-    const quantidade =
-      carrinho[id];
-
-    const subtotal =
-      produto.preco * quantidade;
-
-    total += subtotal;
-
-
-    const div =
-      document.createElement("div");
-
-    div.className = "item-carrinho";
-
-    div.innerHTML = `
-
-      <div>
-        <b>${produto.nome}</b><br>
-        R$ ${subtotal.toFixed(2).replace(".",",")}
-      </div>
-
-      <div class="qtd">
-
-        <button onclick="remover('${id}')">
-          −
-        </button>
-
-        <b>${quantidade}</b>
-
-        <button onclick="adicionar('${id}')">
-          +
-        </button>
-
-      </div>
-
-    `;
-
-    area.appendChild(div);
-
-  });
-
-
-  document.getElementById("total").textContent =
-    total.toFixed(2).replace(".",",");
-
-}
-
-
-/* ================================
-   ENVIAR PEDIDO
-================================ */
-
-window.enviarPedido = async function(){
-
-  const nome =
-    document.getElementById("nomeAluno").value.trim();
-
-  if(!nome){
-
-    mostrarMensagem(
-      "Digite seu nome primeiro.",
-      false
-    );
-
-    return;
-  }
-
-
-  if(Object.keys(carrinho).length === 0){
-
-    mostrarMensagem(
-      "Adicione pelo menos um produto.",
-      false
-    );
-
-    return;
-  }
-
-
-  try{
-
-    if(!auth.currentUser){
-
-      await signInAnonymously(auth);
-
-    }
-
-
-    const pedidoRef =
-      push(ref(db,"orders"));
-
-    const itens = [];
-
-    let total = 0;
-
-
-    Object.keys(carrinho).forEach(id => {
-
-      const produto =
-        produtos.find(p => p.id === id);
-
-      const quantidade =
-        carrinho[id];
-
-      itens.push({
-
-        nome: produto.nome,
-
-        quantidade: quantidade,
-
-        preco: produto.preco
-
-      });
-
-      total +=
-        produto.preco * quantidade;
-
-    });
-
-
-    const pedido = {
-
-      studentUid: auth.currentUser.uid,
-
-      nome: nome,
-
-      itens: itens,
-
-      total: total,
-
-      status: "RECEBIDO",
-
-      criadoEm: Date.now()
-
-    };
-
-
-    await set(pedidoRef,pedido);
-
-
-    const codigo = pedidoRef.key;
-
-
-    document.getElementById("codigoPedido").value =
-      codigo;
-
-
-    mostrarMensagem(
-      "Pedido enviado! Código: " + codigo,
-      true
-    );
-
-
-    carrinho = {};
-
-    atualizarCarrinho();
-
-    acompanharPedido();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    mostrarMensagem(
-      "Não foi possível enviar o pedido. Verifique o Firebase.",
-      false
-    );
-
-  }
-
-};
-
-
-/* ================================
-   ACOMPANHAR PEDIDO
-================================ */
-
-window.acompanharPedido = function(){
-
-  const codigo =
-    document.getElementById("codigoPedido")
-    .value.trim();
-
-  if(!codigo){
-
-    document.getElementById("statusPedido").innerHTML =
-      "<p>Digite o código do pedido.</p>";
-
-    return;
-
-  }
-
-
-  const pedidoRef =
-    ref(db,"orders/" + codigo);
-
-
-  onValue(pedidoRef,(snapshot)=>{
-
-    if(!snapshot.exists()){
-
-      document.getElementById("statusPedido").innerHTML =
-        "<p>Pedido não encontrado.</p>";
-
-      return;
-
-    }
-
-
-    const pedido =
-      snapshot.val();
-
-
-    document.getElementById("statusPedido").innerHTML = `
-
-      <div class="card">
-
-        <h3>Pedido de ${pedido.nome}</h3>
-
-        <p>
-          <b>Status:</b>
-          ${pedido.status}
-        </p>
-
-        ${
-          pedido.status === "PRONTO"
-          ? "<h3>✅ Seu pedido está pronto!</h3>"
-          : ""
-        }
-
-      </div>
-
-    `;
-
-  });
-
-};
-
-
-/* ================================
-   MENSAGENS
-================================ */
-
-function mostrarMensagem(texto, sucesso){
-
-  const div =
-    document.getElementById("mensagem");
-
-  div.style.display = "block";
-
-  div.className =
-    sucesso ? "sucesso" : "erro";
-
-  div.textContent = texto;
-
-}
-
-
-/* ================================
-   ADMIN
-================================ */
-
-window.abrirLoginAdmin = function(){
-
-  document.getElementById("areaAluno")
-    .style.display = "none";
-
-  document.getElementById("adminLogin")
-    .style.display = "block";
-
-};
-
-
-window.voltarAluno = function(){
-
-  document.getElementById("adminLogin")
-    .style.display = "none";
-
-  document.getElementById("adminArea")
-    .style.display = "none";
-
-  document.getElementById("areaAluno")
-    .style.display = "block";
-
-};
-
-
-window.entrarAdmin = async function(){
-
-  const email =
-    document.getElementById("emailAdmin").value.trim();
-
-  const senha =
-    document.getElementById("senhaAdmin").value;
-
-
-  if(!email || !senha){
-
-    document.getElementById("erroLogin").innerHTML =
-      "<p>Digite o e-mail e a senha.</p>";
-
-    return;
-
-  }
-
-
-  try{
-
-    await signInWithEmailAndPassword(
-      auth,
-      email,
-      senha
-    );
-
-
-    document.getElementById("adminLogin")
-      .style.display = "none";
-
-    document.getElementById("areaAluno")
-      .style.display = "none";
-
-    document.getElementById("adminArea")
-      .style.display = "block";
-
-
-    carregarPedidos();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    document.getElementById("erroLogin").innerHTML =
-      "<p>❌ E-mail ou senha incorretos.</p>";
-
-  }
-
-};
-
-
-/* ================================
-   CARREGAR PEDIDOS
-================================ */
-
-function carregarPedidos(){
-
-  const pedidosRef =
-    ref(db,"orders");
-
-
-  onValue(pedidosRef,(snapshot)=>{
-
-    const area =
-      document.getElementById("listaPedidos");
-
-    area.innerHTML = "";
-
-
-    if(!snapshot.exists()){
-
-      area.innerHTML =
-        "<p>Nenhum pedido ainda.</p>";
-
-      return;
-
-    }
-
-
-    const dados =
-      snapshot.val();
-
-
-    const lista =
-      Object.entries(dados).reverse();
-
-
-    lista.forEach(([id,pedido])=>{
-
-      const div =
-        document.createElement("div");
-
-      div.className = "pedido";
-
-
-      let itensHTML = "";
-
-
-      if(pedido.itens){
-
-        pedido.itens.forEach(item => {
-
-          itensHTML += `
-            <li>
-              ${item.quantidade}x
-              ${item.nome}
-            </li>
-          `;
-
-        });
-
-      }
-
-
-      div.innerHTML = `
-
-        <h3>👤 ${pedido.nome}</h3>
-
-        <p class="pequeno">
-          Código: ${id}
-        </p>
-
-        <p>
-          <b>Itens:</b>
-        </p>
-
-        <ul>
-          ${itensHTML}
-        </ul>
-
-        <p>
-          <b>Total:</b>
-          R$ ${Number(pedido.total)
-            .toFixed(2)
-            .replace(".",",")}
-        </p>
-
-        <p class="status">
-          Status: ${pedido.status}
-        </p>
-
-        <button onclick="mudarStatus('${id}','RECEBIDO')">
-          RECEBIDO
-        </button>
-
-        <button onclick="mudarStatus('${id}','PREPARANDO')">
-          PREPARANDO
-        </button>
-
-        <button onclick="mudarStatus('${id}','PRONTO')">
-          PRONTO
-        </button>
-
-      `;
-
-
-      area.appendChild(div);
-
-    });
-
-  });
-
-}
-
-
-/* ================================
-   ALTERAR STATUS
-================================ */
-
-window.mudarStatus = async function(id,status){
-
-  try{
-
-    await update(
-      ref(db,"orders/" + id),
-      {
-        status: status
-      }
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-    alert(
-      "Não foi possível alterar o status."
-    );
-
-  }
-
-};
-
-
-/* ================================
-   SAIR
-================================ */
-
-window.sairAdmin = async function(){
-
-  await signOut(auth);
-
-  document.getElementById("adminArea")
-    .style.display = "none";
-
-  document.getElementById("areaAluno")
-    .style.display = "block";
-
-};
-
-
-/* ================================
-   INICIAR
-================================ */
-
-mostrarProdutos();
-
-atualizarCarrinho();
-
-
-/*
-   NÃO faz login de administrador
-   automaticamente.
-
-   O aluno usa login anônimo.
-*/
-
-onAuthStateChanged(auth,(user)=>{
-
-  if(user && user.email){
-
-    // Usuário administrador
-
-    document.getElementById("areaAluno")
-      .style.display = "none";
-
-    document.getElementById("adminLogin")
-      .style.display = "none";
-
-    document.getElementById("adminArea")
-      .style.display = "block";
-
-    carregarPedidos();
-
-  }
-
+const area=document.getElementById("itensCarrinho");area.innerHTML="";
+let total=0;const ids=Object.keys(carrinho);
+if(!ids.length){area.innerHTML="<p>Nenhum produto adicionado.</p>";document.getElementById("total").textContent="0,00";return}
+ids.forEach(id=>{
+const p=produtos.find(x=>x.id===id);if(!p)return;
+const qtd=carrinho[id],sub=p.preco*qtd;total+=sub;
+const d=document.createElement("div");d.className="item-carrinho";
+d.innerHTML=`<div><b>${escapeHtml(p.nome)}</b><br>R$ ${dinheiro(sub)}</div><div class="qtd"><button onclick="remover('${id}')">−</button><b>${qtd}</b><button onclick="adicionar('${id}')">+</button></div>`;
+area.appendChild(d);
 });
+document.getElementById("total").textContent=dinheiro(total);
+}
 
+function mostrarMensagem(t,s){
+const d=document.getElementById("mensagem");d.style.display="block";d.className=s?"sucesso":"erro";d.textContent=t;
+}
 
+window.enviarPedido=async()=>{
+const nome=document.getElementById("nomeAluno").value.trim();
+if(!nome){mostrarMensagem("Digite seu nome primeiro.",false);return}
+if(!Object.keys(carrinho).length){mostrarMensagem("Adicione pelo menos um produto.",false);return}
+try{
+if(!auth.currentUser || auth.currentUser.email) await signInAnonymously(auth);
+const pedidoRef=push(ref(db,"orders"));const itens=[];let total=0;
+Object.keys(carrinho).forEach(id=>{const p=produtos.find(x=>x.id===id);if(!p)return;itens.push({nome:p.nome,quantidade:carrinho[id],preco:p.preco});total+=p.preco*carrinho[id]});
+await set(pedidoRef,{studentUid:auth.currentUser.uid,nome,itens,total,status:"RECEBIDO",criadoEm:Date.now()});
+document.getElementById("codigoPedido").value=pedidoRef.key;
+mostrarMensagem("Pedido enviado! Código: "+pedidoRef.key,true);
+carrinho={};atualizarCarrinho();acompanharPedido();
+}catch(e){console.error(e);mostrarMensagem("Não foi possível enviar o pedido. Verifique o Firebase.",false)}
+};
+
+window.acompanharPedido=()=>{
+const codigo=document.getElementById("codigoPedido").value.trim();
+if(!codigo){document.getElementById("statusPedido").innerHTML="<p>Digite o código do pedido.</p>";return}
+if(listenerPedido)listenerPedido();
+listenerPedido=onValue(ref(db,"orders/"+codigo),snap=>{
+if(!snap.exists()){document.getElementById("statusPedido").innerHTML="<p>Pedido não encontrado.</p>";return}
+const p=snap.val();
+document.getElementById("statusPedido").innerHTML=`<div class="card"><h3>Pedido de ${escapeHtml(p.nome)}</h3><p><b>Status:</b> ${escapeHtml(p.status)}</p>${p.status==="PRONTO"?"<h3>✅ Seu pedido está pronto!</h3>":""}</div>`;
+});
+};
+
+window.abrirLoginAdmin=()=>{
+document.getElementById("areaAluno").style.display="none";
+document.getElementById("adminLogin").style.display="block";
+};
+window.voltarAluno=()=>{
+document.getElementById("adminLogin").style.display="none";
+document.getElementById("adminArea").style.display="none";
+document.getElementById("areaAluno").style.display="block";
+};
+window.entrarAdmin=async()=>{
+const email=document.getElementById("emailAdmin").value.trim();
+const senha=document.getElementById("senhaAdmin").value;
+const erro=document.getElementById("erroLogin");
+if(!email||!senha){erro.innerHTML="<p>Digite o e-mail e a senha.</p>";return}
+if(email.toLowerCase()!==ADMIN_EMAIL){erro.innerHTML="<p>❌ Use o e-mail da cantina cadastrado no Firebase.</p>";return}
+try{
+await signInWithEmailAndPassword(auth,email,senha);
+document.getElementById("adminLogin").style.display="none";
+document.getElementById("areaAluno").style.display="none";
+document.getElementById("adminArea").style.display="block";
+carregarPedidosAdmin();carregarCardapioAdmin();
+}catch(e){
+console.error(e);
+erro.innerHTML="<p>❌ Não foi possível entrar. Confira se esse e-mail existe em Authentication → Users e se Email/Password está ativado.</p>";
+}
+};
+
+async function carregarCardapioAdmin(){
+try{
+const snap=await get(ref(db,"menu"));
+if(snap.exists())produtos=Object.values(snap.val());
+renderAdminProdutos();
+}catch(e){console.error(e);renderAdminProdutos()}
+}
+function renderAdminProdutos(){
+const area=document.getElementById("adminProdutos");area.innerHTML="";
+produtos.forEach((p,i)=>{
+const d=document.createElement("div");d.className="admin-produto";
+d.innerHTML=`<input class="nome" data-i="${i}" value="${escapeHtml(p.nome)}"><input class="preco-input" data-i="${i}" type="number" step="0.01" min="0" value="${Number(p.preco).toFixed(2)}"><button class="btn-vermelho" onclick="excluirProduto(${i})">🗑️</button>`;
+area.appendChild(d);
+});
+}
+window.adicionarProduto=()=>{
+produtos.push({id:"produto-"+Date.now(),nome:"Novo produto",preco:0});
+renderAdminProdutos();
+};
+window.excluirProduto=i=>{produtos.splice(i,1);renderAdminProdutos()};
+window.salvarCardapio=async()=>{
+try{
+const nomes=[...document.querySelectorAll("#adminProdutos .nome")];
+const precos=[...document.querySelectorAll("#adminProdutos .preco-input")];
+produtos.forEach((p,i)=>{p.nome=nomes[i].value.trim()||"Produto";p.preco=Math.max(0,Number(precos[i].value)||0);p.id=p.id||idProduto(p.nome)});
+const objeto={};produtos.forEach(p=>objeto[p.id]=p);
+await set(ref(db,"menu"),objeto);
+mostrarProdutos();
+document.getElementById("msgCardapio").innerHTML="<p style='color:green'>✅ Cardápio salvo!</p>";
+}catch(e){console.error(e);document.getElementById("msgCardapio").innerHTML="<p style='color:#b00020'>❌ Não foi possível salvar. Verifique as regras do Firebase.</p>"}
+};
+
+function carregarPedidosAdmin(){
+if(listenerPedidosAdmin)listenerPedidosAdmin();
+listenerPedidosAdmin=onValue(ref(db,"orders"),snap=>{
+const area=document.getElementById("listaPedidos");area.innerHTML="";
+if(!snap.exists()){area.innerHTML="<p>Nenhum pedido ainda.</p>";return}
+Object.entries(snap.val()).reverse().forEach(([id,p])=>{
+let itensHTML="";
+(p.itens||[]).forEach(item=>itensHTML+=`<li>${item.quantidade}x ${escapeHtml(item.nome)}</li>`);
+const d=document.createElement("div");d.className="pedido";
+d.innerHTML=`<h3>👤 ${escapeHtml(p.nome)}</h3><p class="pequeno">Código: ${id}</p><p><b>Itens:</b></p><ul>${itensHTML}</ul><p><b>Total:</b> R$ ${dinheiro(p.total)}</p><p class="status">Status: ${escapeHtml(p.status)}</p><button onclick="mudarStatus('${id}','RECEBIDO')">RECEBIDO</button><button onclick="mudarStatus('${id}','PREPARANDO')">PREPARANDO</button><button onclick="mudarStatus('${id}','PRONTO')">PRONTO</button>`;
+area.appendChild(d);
+});
+});
+}
+window.mudarStatus=async(id,status)=>{
+try{await update(ref(db,"orders/"+id),{status})}catch(e){console.error(e);alert("Não foi possível alterar o status.")}
+};
+window.sairAdmin=async()=>{
+if(listenerPedidosAdmin){listenerPedidosAdmin();listenerPedidosAdmin=null}
+await signOut(auth);
+document.getElementById("adminArea").style.display="none";
+document.getElementById("adminLogin").style.display="none";
+document.getElementById("areaAluno").style.display="block";
+try{await signInAnonymously(auth)}catch(e){}
+};
+
+onAuthStateChanged(auth,user=>{
+if(user&&user.email===ADMIN_EMAIL){
+document.getElementById("areaAluno").style.display="none";
+document.getElementById("adminLogin").style.display="none";
+document.getElementById("adminArea").style.display="block";
+carregarPedidosAdmin();carregarCardapioAdmin();
+}
+});
 </script>
-
 </body>
 </html>
