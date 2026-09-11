@@ -4,1057 +4,134 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Cantina ADAI</title>
-
 <style>
 *{box-sizing:border-box}
-
-body{
- margin:0;
- font-family:Arial,sans-serif;
- background:#fff7ef;
- color:#222
-}
-
-header{
- background:linear-gradient(135deg,#ff7200,#ff9d32);
- color:white;
- padding:24px 16px;
- text-align:center;
- border-radius:0 0 25px 25px
-}
-
+body{margin:0;font-family:Arial,sans-serif;background:#fff7ef;color:#222}
+header{background:linear-gradient(135deg,#ff7200,#ff9d32);color:white;padding:24px 16px;text-align:center;border-radius:0 0 25px 25px}
 header h1{margin:0;font-size:30px}
 header p{margin:7px 0 0}
-
-.container{
- max-width:900px;
- margin:auto;
- padding:16px
-}
-
-.card{
- background:white;
- border-radius:18px;
- padding:16px;
- margin-bottom:15px;
- box-shadow:0 2px 10px #0001
-}
-
-.grid{
- display:grid;
- grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
- gap:14px
-}
-
+.container{max-width:900px;margin:auto;padding:16px}
+.card{background:white;border-radius:18px;padding:16px;margin-bottom:15px;box-shadow:0 2px 10px #0001}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
 .product h3{margin:0 0 7px}
-
-.price{
- color:#e76500;
- font-weight:bold;
- font-size:18px
-}
-
-label{
- display:block;
- font-weight:bold;
- margin:10px 0 5px
-}
-
-input,select,button{
- width:100%;
- padding:12px;
- border-radius:11px;
- border:1px solid #ddd;
- font-size:16px
-}
-
-button{
- border:0;
- font-weight:bold;
- cursor:pointer
-}
-
-.main{
- background:#ff7600;
- color:white
-}
-
-.secondary{
- background:#fff0df;
- color:#c65300
-}
-
+.price{color:#e76500;font-weight:bold;font-size:18px}
+label{display:block;font-weight:bold;margin:10px 0 5px}
+input,select,button{width:100%;padding:12px;border-radius:11px;border:1px solid #ddd;font-size:16px}
+button{border:0;font-weight:bold;cursor:pointer}
+.main{background:#ff7600;color:white}
+.secondary{background:#fff0df;color:#c65300}
+.danger{background:#ffebee;color:#c62828}
 .hidden{display:none!important}
-
-.cart-item{
- display:flex;
- justify-content:space-between;
- align-items:center;
- border-bottom:1px solid #eee;
- padding:10px 0;
- gap:10px
-}
-
-.qty{
- display:flex;
- align-items:center;
- gap:8px
-}
-
-.qty button{
- width:40px;
- padding:8px
-}
-
-.total{
- text-align:right;
- font-size:22px;
- font-weight:bold;
- margin:16px 0
-}
-
-.status{
- text-align:center;
- padding:12px;
- border-radius:12px;
- font-weight:bold;
- margin:10px 0
-}
-
+.cart-item{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding:10px 0;gap:10px}
+.qty{display:flex;align-items:center;gap:8px}
+.qty button{width:40px;padding:8px}
+.total{text-align:right;font-size:22px;font-weight:bold;margin:16px 0}
+.status{text-align:center;padding:12px;border-radius:12px;font-weight:bold;margin:10px 0}
 .recebido{background:#fff0df;color:#d65d00}
 .preparando{background:#fff3ae;color:#8a6500}
 .pronto{background:#d8f6df;color:#16813b}
-
-.badge{
- display:inline-block;
- padding:6px 10px;
- border-radius:20px;
- background:#fff0df;
- color:#d65d00;
- font-weight:bold
-}
-
-.notice{
- background:#fff0df;
- padding:12px;
- border-radius:12px;
- margin:10px 0
-}
-
-.admin-buttons{
- display:flex;
- gap:7px;
- flex-wrap:wrap
-}
-
-.admin-buttons button{
- flex:1;
- min-width:100px
-}
+.badge{display:inline-block;padding:6px 10px;border-radius:20px;background:#fff0df;color:#d65d00;font-weight:bold}
+.notice{background:#fff0df;padding:12px;border-radius:12px;margin:10px 0}
+.admin-buttons{display:flex;gap:7px;flex-wrap:wrap}
+.admin-buttons button{flex:1;min-width:100px}
+.preco-tamanho{font-size:14px;color:#666;margin-top:4px}
 </style>
 </head>
-
 <body>
-
 <header>
 <h1>🍔 Cantina ADAI</h1>
 <p>Faça seu pedido sem enfrentar fila</p>
 </header>
-
 <div class="container">
-
-<!-- ÁREA DO ALUNO -->
-
 <section id="aluno">
-
-<div class="card">
-<h2>🍽️ Cardápio</h2>
-<p>Escolha seus produtos e monte seu pedido.</p>
-</div>
-
+<div class="card"><h2>🍽️ Cardápio</h2><p>Escolha seus produtos e monte seu pedido.</p></div>
 <div id="cardapio" class="grid"></div>
-
 <div class="card">
-
 <h2>🛒 Seu carrinho</h2>
-
-<div id="carrinho">
-<p>Nenhum produto adicionado.</p>
-</div>
-
-<div class="total">
-Total: <span id="total">R$ 0,00</span>
-</div>
-
-<label>Seu nome</label>
-<input id="nome" placeholder="Digite seu nome">
-
+<div id="carrinho"><p>Nenhum produto adicionado.</p></div>
+<div class="total">Total: <span id="total">R$ 0,00</span></div>
+<label>Seu nome</label><input id="nome" placeholder="Digite seu nome">
 <label>Forma de pagamento</label>
-
-<select id="pagamento">
-<option>Pagar na retirada</option>
-<option>Pix</option>
-</select>
-
-<button class="main" onclick="enviarPedido()">
-Enviar pedido
-</button>
-
+<select id="pagamento"><option>Pagar na retirada</option><option>Pix</option></select>
+<button class="main" onclick="enviarPedido()">Enviar pedido</button>
 <div id="mensagem"></div>
-
 </div>
-
 <div id="acompanhar"></div>
-
 </section>
-
-
-<!-- ÁREA DA CANTINA -->
-
 <section id="cantina" class="hidden">
-
 <div id="login">
-
 <div class="card">
-
 <h2>🔐 Área da Cantina</h2>
-
-<p>
-Qualquer adulto da cantina pode entrar usando o mesmo acesso.
-</p>
-
-<label>E-mail</label>
-
-<input
-id="email"
-type="email"
-placeholder="E-mail da cantina"
->
-
-<label>Senha</label>
-
-<input
-id="senha"
-type="password"
-placeholder="Senha"
->
-
-<button class="main" onclick="entrar()">
-Entrar
-</button>
-
+<p>Qualquer adulto da cantina pode entrar usando o mesmo acesso.</p>
+<label>E-mail</label><input id="email" type="email" placeholder="E-mail da cantina">
+<label>Senha</label><input id="senha" type="password" placeholder="Senha">
+<button class="main" onclick="entrar()">Entrar</button>
 <p id="erro"></p>
-
 </div>
-
 </div>
-
-
 <div id="painel" class="hidden">
-
+<div class="card"><h2>📋 Pedidos</h2><div id="pedidos"></div></div>
 <div class="card">
-
-<h2>📋 Pedidos</h2>
-
-<div id="pedidos"></div>
-
-</div>
-
-
-<div class="card">
-
 <h2>🍕 Cardápio</h2>
-
-<p>
-Aqui os adultos podem alterar os produtos e preços.
-</p>
-
+<p>Aqui os adultos podem alterar os produtos e preços.</p>
+<button class="main" style="margin-bottom:15px" onclick="adicionarProduto()">+ Adicionar Produto</button>
 <div id="editarCardapio"></div>
-
 </div>
-
-<button class="secondary" onclick="sair()">
-Sair
-</button>
-
+<button class="secondary" onclick="sair()">Sair</button>
 </div>
-
 </section>
-
 </div>
-
-
-<!-- FIREBASE -->
-
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-
-
 <script>
-
-const firebaseConfig={
-
-apiKey:"AIzaSyCFNXgbNFQ8GcX1vnbuw9FT0aXWxzrc34",
-
-authDomain:"cantina-igreja-e5f29.firebaseapp.com",
-
-projectId:"cantina-igreja-e5f29",
-
-storageBucket:"cantina-igreja-e5f29.firebasestorage.app",
-
-messagingSenderId:"432970369348",
-
-appId:"1:432970369348:web:f3a0298f132e03e2d62f11",
-
-measurementId:"G-ZXD631PL0M",
-
-databaseURL:
-"https://cantina-igreja-e5f29-default-rtdb.europe-west1.firebasedatabase.app/"
-
+const firebaseConfig = {
+  apiKey: "AIzaSyCFNXgbNFQ8GcX1vnbuw9FT0aXWxzrc34",
+  authDomain: "cantina-igreja-e5f29.firebaseapp.com",
+  projectId: "cantina-igreja-e5f29",
+  storageBucket: "cantina-igreja-e5f29.firebasestorage.app",
+  messagingSenderId: "432970369348",
+  appId: "1:432970369348:web:f3a0298f132e03e2d62f11",
+  measurementId: "G-ZXD631PL0M",
+  databaseURL: "https://cantina-igreja-e5f29-default-rtdb.europe-west1.firebasedatabase.app/"
 };
-
-
 firebase.initializeApp(firebaseConfig);
-
-const auth=firebase.auth();
-
-const db=firebase.database();
-
-
-const EMAIL="cantinaadai@gmail.com";
-
-
-let carrinho=[];
-
-
-let menu={
-
-pizza:{
-nome:"Pizza",
-preco:5,
-opcoes:{
-sabor:[
-"Queijo e presunto",
-"Frango",
-"Calabresa",
-"Portuguesa"
-]
-}
-},
-
-churrasco:{
-nome:"Churrasco no espeto",
-preco:7,
-opcoes:{
-sabor:[
-"Churrasco",
-"Queijo no espeto"
-]
-}
-},
-
-batata:{
-nome:"Batata",
-preco:12,
-opcoes:{
-tamanho:["M","G"],
-adicional:[
-"Sem linguiça",
-"Com linguiça"
-]
-}
-},
-
-activia:{
-nome:"Activia Plus",
-preco:5,
-opcoes:{}
-},
-
-refrigerante:{
-nome:"Refrigerante",
-preco:4,
-opcoes:{}
-},
-
-suco:{
-nome:"Suco",
-preco:3.5,
-opcoes:{}
-},
-
-agua:{
-nome:"Água",
-preco:2.5,
-opcoes:{}
-}
-
+const auth = firebase.auth();
+const db = firebase.database();
+const EMAIL_ADMIN = "cantinaadai@gmail.com";
+const MENU_PADRAO = {
+  pizza:{nome:"Pizza",precoBase:5.00,opcoes:{sabor:["Queijo e presunto","Frango","Calabresa","Portuguesa"]}},
+  churrasco:{nome:"Churrasco no espeto",precoBase:7.00,opcoes:{sabor:["Churrasco","Queijo no espeto"]}},
+  batata:{nome:"Batata",precoBase:12.00,opcoes:{tamanho:{M:12.00,G:22.00},adicional:["Sem linguiça","Com linguiça"]}},
+  activia:{nome:"Activia Plus",precoBase:5.00,opcoes:{}},
+  refrigerante:{nome:"Refrigerante",precoBase:4.00,opcoes:{}},
+  suco:{nome:"Suco",precoBase:3.50,opcoes:{}},
+  agua:{nome:"Água",precoBase:2.50,opcoes:{}}
 };
-
-
-function dinheiro(valor){
-
-return Number(valor).toLocaleString(
-"pt-BR",
-{
-style:"currency",
-currency:"BRL"
-}
-);
-
-}
-
-
-function carregarMenu(){
-
-db.ref("menu").once("value").then(snap=>{
-
-if(snap.exists()){
-
-menu=snap.val();
-
-}else{
-
-db.ref("menu").set(menu);
-
-}
-
-mostrarMenu();
-
-});
-
-}
-
-
-function mostrarMenu(){
-
-let html="";
-
-Object.entries(menu).forEach(([id,p])=>{
-
-html+=`
-
-<div class="card product">
-
-<h3>${p.nome}</h3>
-
-<div class="price">
-${dinheiro(p.preco)}
-</div>
-`;
-
-if(p.opcoes){
-
-Object.entries(p.opcoes).forEach(([tipo,lista])=>{
-
-html+=`
-
-<label>
-${
-tipo==="sabor"
-?"Sabor":
-tipo==="tamanho"
-?"Tamanho":
-"Adicional"
-}
-</label>
-
-<select id="${id}-${tipo}">
-`;
-
-lista.forEach(op=>{
-
-html+=`<option>${op}</option>`;
-
-});
-
-html+=`
-
-</select>
-
-`;
-
-});
-
-}
-
-html+=`
-
-<button
-class="main"
-style="margin-top:12px"
-onclick="adicionar('${id}')"
->
-Adicionar
-</button>
-
-</div>
-
-`;
-
-});
-
-document.getElementById("cardapio").innerHTML=html;
-
-}
-
-
-function adicionar(id){
-
-let p=menu[id];
-
-let opcoes={};
-
-Object.entries(p.opcoes||{}).forEach(([tipo])=>{
-
-let campo=document.getElementById(id+"-"+tipo);
-
-if(campo){
-
-opcoes[tipo]=campo.value;
-
-}
-
-});
-
-carrinho.push({
-
-nome:p.nome,
-
-preco:Number(p.preco),
-
-opcoes:opcoes,
-
-quantidade:1
-
-});
-
-mostrarCarrinho();
-
-}
-
-
-function alterarQuantidade(i,valor){
-
-carrinho[i].quantidade+=valor;
-
-if(carrinho[i].quantidade<=0){
-
-carrinho.splice(i,1);
-
-}
-
-mostrarCarrinho();
-
-}
-
-
-function calcularTotal(){
-
-return carrinho.reduce(
-
-(total,item)=>
-total+(item.preco*item.quantidade),
-
-0
-
-);
-
-}
-
-
-function mostrarCarrinho(){
-
-let html="";
-
-if(carrinho.length===0){
-
-html="<p>Nenhum produto adicionado.</p>";
-
-}else{
-
-carrinho.forEach((item,i)=>{
-
-let op="";
-
-Object.values(item.opcoes||{}).forEach(x=>{
-
-op+=x+" • ";
-
-});
-
-html+=`
-
-<div class="cart-item">
-
-<div>
-
-<b>${item.nome}</b>
-
-<div>${op}</div>
-
-<div>${dinheiro(item.preco)}</div>
-
-</div>
-
-<div class="qty">
-
-<button
-class="secondary"
-onclick="alterarQuantidade(${i},-1)"
->
-−
-</button>
-
-<span>${item.quantidade}</span>
-
-<button
-class="secondary"
-onclick="alterarQuantidade(${i},1)"
->
-+
-</button>
-
-</div>
-
-</div>
-
-`;
-
-});
-
-}
-
-document.getElementById("carrinho").innerHTML=html;
-
-document.getElementById("total").textContent=
-dinheiro(calcularTotal());
-
-}
-
-
-async function enviarPedido(){
-
-let nome=document.getElementById("nome").value.trim();
-
-if(!nome){
-
-alert("Digite seu nome.");
-
-return;
-
-}
-
-if(carrinho.length===0){
-
-alert("Adicione algum produto.");
-
-return;
-
-}
-
-
-let usuario=auth.currentUser;
-
-if(!usuario){
-
-await auth.signInAnonymously();
-
-usuario=auth.currentUser;
-
-}
-
-
-let pedido={
-
-studentUid:usuario.uid,
-
-nome:nome,
-
-pagamento:
-document.getElementById("pagamento").value,
-
-itens:carrinho,
-
-total:calcularTotal(),
-
-status:"Recebido",
-
-data:firebase.database.ServerValue.TIMESTAMP
-
-};
-
-
-let ref=db.ref("orders").push();
-
-await ref.set(pedido);
-
-
-localStorage.setItem(
-"ultimoPedido",
-ref.key
-);
-
-
-carrinho=[];
-
-mostrarCarrinho();
-
-
-document.getElementById("mensagem").innerHTML=`
-
-<div class="notice">
-
-<b>✅ Pedido enviado!</b>
-
-<br>
-
-Número do pedido:
-
-<b>#${ref.key.slice(-5).toUpperCase()}</b>
-
-</div>
-
-`;
-
-acompanharPedido(ref.key);
-
-}
-
-
-function acompanharPedido(id){
-
-db.ref("orders/"+id).on("value",snap=>{
-
-let p=snap.val();
-
-if(!p)return;
-
-let classe=
-
-p.status==="Pronto"
-?"pronto":
-p.status==="Preparando"
-?"preparando":
-"recebido";
-
-
-document.getElementById("acompanhar").innerHTML=`
-
-<div class="card">
-
-<h2>📍 Acompanhar pedido</h2>
-
-<div class="status ${classe}">
-
-${p.status}
-
-</div>
-
-<p>
-Pedido: #${id.slice(-5).toUpperCase()}
-</p>
-
-</div>
-
-`;
-
-});
-
-}
-
-
-async function entrar(){
-
-let email=
-document.getElementById("email").value.trim();
-
-let senha=
-document.getElementById("senha").value;
-
-
-try{
-
-let cred=
-await auth.signInWithEmailAndPassword(
-email,
-senha
-);
-
-
-if(
-(cred.user.email||"").toLowerCase()
-!==EMAIL
-){
-
-throw new Error();
-
-}
-
-
-document.getElementById("login")
-.classList.add("hidden");
-
-document.getElementById("painel")
-.classList.remove("hidden");
-
-mostrarPedidos();
-
-editarCardapio();
-
-
-}catch(e){
-
-document.getElementById("erro").textContent=
-"E-mail ou senha incorretos.";
-
-}
-
-}
-
-
-function mostrarPedidos(){
-
-db.ref("orders").on("value",snap=>{
-
-let html="";
-
-snap.forEach(item=>{
-
-let p=item.val();
-
-html+=`
-
-<div class="card">
-
-<span class="badge">
-#${item.key.slice(-5).toUpperCase()}
-</span>
-
-<h3>${p.nome}</h3>
-
-<p>
-
-${(p.itens||[]).map(i=>
-`${i.quantidade}x ${i.nome}`
-).join("<br>")}
-
-</p>
-
-<p>
-Total: <b>${dinheiro(p.total)}</b>
-</p>
-
-<p>
-Pagamento: ${p.pagamento}
-</p>
-
-<div class="admin-buttons">
-
-<button
-class="secondary"
-onclick="mudarStatus('${item.key}','Recebido')"
->
-Recebido
-</button>
-
-<button
-class="secondary"
-onclick="mudarStatus('${item.key}','Preparando')"
->
-Preparando
-</button>
-
-<button
-class="main"
-onclick="mudarStatus('${item.key}','Pronto')"
->
-Pronto
-</button>
-
-</div>
-
-<div class="status ${
-p.status==="Pronto"
-?"pronto":
-p.status==="Preparando"
-?"preparando":
-"recebido"
-}">
-
-${p.status}
-
-</div>
-
-</div>
-
-`;
-
-});
-
-document.getElementById("pedidos").innerHTML=
-html||"<p>Nenhum pedido ainda.</p>";
-
-});
-
-}
-
-
-function mudarStatus(id,status){
-
-db.ref("orders/"+id+"/status").set(status);
-
-}
-
-
-function editarCardapio(){
-
-let html="";
-
-Object.entries(menu).forEach(([id,p])=>{
-
-html+=`
-
-<div class="card">
-
-<label>Produto</label>
-
-<input
-id="nome-${id}"
-value="${p.nome}"
->
-
-<label>Preço</label>
-
-<input
-id="preco-${id}"
-type="number"
-step="0.01"
-value="${p.preco}"
->
-`;
-
-Object.entries(p.opcoes||{}).forEach(([tipo,lista])=>{
-
-html+=`
-
-<label>
-${
-tipo==="sabor"
-?"Sabores":
-tipo==="tamanho"
-?"Tamanhos":
-"Adicionais"
-}
-</label>
-
-<input
-id="op-${id}-${tipo}"
-value="${lista.join(" | ")}"
->
-
-`;
-
-});
-
-html+=`
-
-<button
-class="main"
-style="margin-top:10px"
-onclick="salvarProduto('${id}')"
->
-Salvar alterações
-</button>
-
-</div>
-
-`;
-
-});
-
-document.getElementById("editarCardapio").innerHTML=html;
-
-}
-
-
-function salvarProduto(id){
-
-let p=menu[id];
-
-p.nome=
-document.getElementById("nome-"+id).value;
-
-p.preco=
-Number(document.getElementById("preco-"+id).value);
-
-
-Object.keys(p.opcoes||{}).forEach(tipo=>{
-
-let valor=
-document.getElementById("op-"+id+"-"+tipo).value;
-
-p.opcoes[tipo]=
-valor.split("|")
-.map(x=>x.trim())
-.filter(Boolean);
-
-});
-
-
-db.ref("menu/"+id).set(p).then(()=>{
-
-alert("Cardápio atualizado!");
-
-});
-
-}
-
-
-function sair(){
-
-auth.signOut().then(()=>{
-
-location.reload();
-
-});
-
-}
-
-
-/* LOGIN DA CANTINA */
-
-document.querySelector("header")
-.addEventListener("dblclick",()=>{
-
-document.getElementById("aluno")
-.classList.add("hidden");
-
-document.getElementById("cantina")
-.classList.remove("hidden");
-
-});
-
-
-/* ALUNO */
-
-auth.onAuthStateChanged(user=>{
-
-if(!user){
-
-auth.signInAnonymously();
-
-}
-
-});
-
-
+let menu = JSON.parse(JSON.stringify(MENU_PADRAO));
+let carrinho = [];
+let usuarioAtual = null;
+function dinheiro(valor){return Number(valor).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function getPrecoProduto(p,op={}){let preco=p.precoBase||0;if(p.opcoes.tamanho&&op.tamanho)preco=p.opcoes.tamanho[op.tamanho]||preco;return preco}
+function carregarMenu(){db.ref("menu").on("value",s=>{if(s.exists())menu=s.val();else menu=JSON.parse(JSON.stringify(MENU_PADRAO));mostrarMenu()},e=>{console.error(e);menu=MENU_PADRAO;mostrarMenu()})}
+function mostrarMenu(){let h="";Object.entries(menu).forEach(([id,p])=>{h+=`<div class="card product"><h3>${p.nome}</h3><div class="price">${dinheiro(p.precoBase)}</div>`;if(p.opcoes.sabor){h+=`<label>Sabor</label><select id="${id}-sabor">${p.opcoes.sabor.map(o=>`<option>${o}</option>`).join("")}</select>`}if(p.opcoes.tamanho){h+=`<label>Tamanho</label><select id="${id}-tamanho">${Object.entries(p.opcoes.tamanho).map(([t,v])=>`<option value="${t}">${t} - ${dinheiro(v)}</option>`).join("")}</select>`}if(p.opcoes.adicional){h+=`<label>Adicional</label><select id="${id}-adicional">${p.opcoes.adicional.map(o=>`<option>${o}</option>`).join("")}</select>`}h+=`<button class="main" style="margin-top:12px" onclick="adicionarAoCarrinho('${id}')">Adicionar</button></div>`});document.getElementById("cardapio").innerHTML=h}
+function adicionarAoCarrinho(id){let p=menu[id];if(!p)return;let op={};if(p.opcoes.sabor)op.sabor=document.getElementById(`${id}-sabor`).value;if(p.opcoes.tamanho)op.tamanho=document.getElementById(`${id}-tamanho`).value;if(p.opcoes.adicional)op.adicional=document.getElementById(`${id}-adicional`).value;let preco=getPrecoProduto(p,op);carrinho.push({id,nome:p.nome,precoUnitario:preco,opcoes:op,quantidade:1});atualizarCarrinho()}
+function alterarQuantidade(i,q){if(carrinho[i]){carrinho[i].quantidade+=q;if(carrinho[i].quantidade<=0)carrinho.splice(i,1);atualizarCarrinho()}}
+function calcularTotal(){return carrinho.reduce((t,i)=>t+(i.precoUnitario*i.quantidade),0)}
+function atualizarCarrinho(){let h="";if(carrinho.length===0)h="<p>Nenhum produto adicionado.</p>";else{carrinho.forEach((item,i)=>{let op=Object.values(item.opcoes||{}).join(" • ");h+=`<div class="cart-item"><div><b>${item.nome}</b><div>${op}</div><div>${dinheiro(item.precoUnitario)}</div></div><div class="qty"><button class="secondary" onclick="alterarQuantidade(${i},-1)">−</button><span>${item.quantidade}</span><button class="secondary" onclick="alterarQuantidade(${i},1)">+</button></div></div>`})}document.getElementById("carrinho").innerHTML=h;document.getElementById("total").textContent=dinheiro(calcularTotal())}
+async function enviarPedido(){let n=document.getElementById("nome").value.trim(),p=document.getElementById("pagamento").value;if(!n){alert("Digite seu nome!");return}if(carrinho.length===0){alert("Adicione produtos!");return}try{if(!auth.currentUser)await auth.signInAnonymously();let pd={studentUid:auth.currentUser.uid,nome:n,itens:carrinho,total:calcularTotal(),pagamento:p,status:"Recebido",data:firebase.database.ServerValue.TIMESTAMP};let ref=db.ref("orders").push();await ref.set(pd);localStorage.setItem("pedidoAtual",ref.key);carrinho=[];atualizarCarrinho();document.getElementById("mensagem").innerHTML=`<div class="notice"><b>✅ Pedido enviado!</b><br>#${ref.key.slice(-5).toUpperCase()}</div>`;acompanharPedido(ref.key)}catch(e){alert("Erro: "+e.message)}}
+function acompanharPedido(id){db.ref(`orders/${id}`).on("value",s=>{let p=s.val();if(!p)return;let c=p.status==="Pronto"?"pronto":p.status==="Preparando"?"preparando":"recebido";document.getElementById("acompanhar").innerHTML=`<div class="card"><h2>📍 Acompanhar</h2><div class="status ${c}">${p.status}</div></div>`})}
+async function entrar(){let e=document.getElementById("email").value.trim(),s=document.getElementById("senha").value,er=document.getElementById("erro");er.textContent="";try{let c=await auth.signInWithEmailAndPassword(e,s);if(c.user.email!==EMAIL_ADMIN)throw new Error();document.getElementById("login").classList.add("hidden");document.getElementById("painel").classList.remove("hidden");mostrarPedidos();editarCardapioAdmin()}catch(x){er.textContent="E-mail/senha inválidos"}}
+function mostrarPedidos(){db.ref("orders").on("value",s=>{let h="";s.forEach(c=>{let p=c.val(),k=c.key;let st=p.status==="Pronto"?"pronto":p.status==="Preparando"?"preparando":"recebido";h+=`<div class="card"><span class="badge">#${k.slice(-5).toUpperCase()}</span><h3>${p.nome}</h3><p>${(p.itens||[]).map(i=>`${i.quantidade}x ${i.nome}`).join("<br>")}</p><p>Total: ${dinheiro(p.total)}</p><div class="admin-buttons"><button onclick="mudarStatus('${k}','Recebido')">Recebido</button><button onclick="mudarStatus('${k}','Preparando')">Preparando</button><button class="main" onclick="mudarStatus('${k}','Pronto')">Pronto</button></div><div class="status ${st}">${p.status}</div></div>`})})}
+function mudarStatus(k,st){db.ref(`orders/${k}/status`).set(st)}
+function editarCardapioAdmin(){let h="";Object.entries(menu).forEach(([id,p])=>{h+=`<div class="card"><label>Nome</label><input id="n-${id}" value="${p.nome}"><label>Preço Base</label><input type="number" step="0.01" id="pr-${id}" value="${p.precoBase}">`;if(p.opcoes.sabor)h+=`<label>Sabores</label><input id="s-${id}" value="${p.opcoes.sabor.join(", ")}">`;if(p.opcoes.tamanho)h+=`<label>Tamanhos (ex: M:12)</label><input id="t-${id}" value="${Object.entries(p.opcoes.tamanho||{}).map(([a,b])=>a+":"+b).join(", ")}">`;if(p.opcoes.adicional)h+=`<label>Adicionais</label><input id="ad-${id}" value="${p.opcoes.adicional.join(", ")}">`;h+=`<div style="margin-top:8px"><button class="main" onclick="salvar('${id}')">Salvar</button> <button class="danger" onclick="excluir('${id}')">Excluir</button></div></div>`});document.getElementById("editarCardapio").innerHTML=h}
+function salvar(id){let n=document.getElementById(`n-${id}`).value,pr=+document.getElementById(`pr-${id}`).value;let up={nome:n,precoBase:pr,opcoes:{}};let sEl=document.getElementById(`s-${id}`);if(sEl)up.opcoes.sabor=sEl.value.split(",").map(x=>x.trim()).filter(Boolean);let tEl=document.getElementById(`t-${id}`);if(tEl){up.opcoes.tamanho={};tEl.value.split(",").forEach(x=>{let[a,b]=x.split(":");if(a&&b)up.opcoes.tamanho[a.trim()]=+b})}let adEl=document.getElementById(`ad-${id}`);if(adEl)up.opcoes.adicional=adEl.value.split(",").map(x=>x.trim()).filter(Boolean);db.ref("menu/"+id).set(up).then(()=>{alert("Salvo!");carregarMenu()})}
+function excluir(id){if(confirm("Excluir produto?"))db.ref("menu/"+id).remove()}
+function adicionarProduto(){let id="prod_"+Date.now();menu[id]={nome:"Novo Produto",precoBase:5,opcoes:{}};db.ref("menu/"+id).set(menu[id])}
+function sair(){auth.signOut().then(()=>location.reload())}
+document.querySelector("header").addEventListener("dblclick",()=>{document.getElementById("aluno").classList.add("hidden");document.getElementById("cantina").classList.remove("hidden")});
+auth.onAuthStateChanged(u=>{if(!u)auth.signInAnonymously();else if(u.email===EMAIL_ADMIN){document.getElementById("login").classList.add("hidden");document.getElementById("painel").classList.remove("hidden");mostrarPedidos();editarCardapioAdmin()}});
 carregarMenu();
-
 </script>
-
 </body>
 </html>
