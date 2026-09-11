@@ -2,318 +2,1059 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cantina Online</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Cantina ADAI</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5;color:#222}
-header{background:#ff7a00;color:white;padding:22px;text-align:center}
-header h1{margin:0}
-.container{max-width:700px;margin:auto;padding:20px}
-.card{background:white;border-radius:15px;padding:18px;margin-bottom:15px;box-shadow:0 2px 8px #ddd}
-.produto{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.produto h3{margin:0 0 5px}.preco{font-weight:bold;color:#ff6500}
-button{border:0;border-radius:10px;padding:12px 16px;background:#ff7a00;color:white;font-weight:bold;cursor:pointer}
-button:active{transform:scale(.97)}
-input{width:100%;padding:13px;border:1px solid #ccc;border-radius:10px;margin:8px 0 15px;font-size:16px}
-#carrinho{position:sticky;bottom:10px;z-index:5}
-.item-carrinho{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #eee}
-.qtd button{padding:6px 10px;margin:0 3px}.total{font-size:20px;font-weight:bold;margin-top:15px}
-#mensagem{padding:15px;border-radius:10px;margin-top:10px;display:none}
-.sucesso{background:#d9ffd9;color:#176b17}.erro{background:#ffdede;color:#8b0000}
-#adminArea,#adminLogin{display:none}.pedido{border:1px solid #ddd;border-radius:12px;padding:15px;margin:12px 0}
-.status{font-weight:bold;margin:8px 0}.status button{margin:3px;background:#333}
-.pequeno{font-size:13px;color:#666}
-.admin-produto{display:flex;gap:8px;align-items:center;margin:8px 0;padding:10px;border:1px solid #eee;border-radius:10px}
-.admin-produto input{margin:0}.admin-produto .nome{flex:1}.admin-produto .preco-input{width:100px}
-.btn-cinza{background:#666}.btn-vermelho{background:#b00020}
+
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#fff7ef;
+ color:#222
+}
+
+header{
+ background:linear-gradient(135deg,#ff7200,#ff9d32);
+ color:white;
+ padding:24px 16px;
+ text-align:center;
+ border-radius:0 0 25px 25px
+}
+
+header h1{margin:0;font-size:30px}
+header p{margin:7px 0 0}
+
+.container{
+ max-width:900px;
+ margin:auto;
+ padding:16px
+}
+
+.card{
+ background:white;
+ border-radius:18px;
+ padding:16px;
+ margin-bottom:15px;
+ box-shadow:0 2px 10px #0001
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+ gap:14px
+}
+
+.product h3{margin:0 0 7px}
+
+.price{
+ color:#e76500;
+ font-weight:bold;
+ font-size:18px
+}
+
+label{
+ display:block;
+ font-weight:bold;
+ margin:10px 0 5px
+}
+
+input,select,button{
+ width:100%;
+ padding:12px;
+ border-radius:11px;
+ border:1px solid #ddd;
+ font-size:16px
+}
+
+button{
+ border:0;
+ font-weight:bold;
+ cursor:pointer
+}
+
+.main{
+ background:#ff7600;
+ color:white
+}
+
+.secondary{
+ background:#fff0df;
+ color:#c65300
+}
+
+.hidden{display:none!important}
+
+.cart-item{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ border-bottom:1px solid #eee;
+ padding:10px 0;
+ gap:10px
+}
+
+.qty{
+ display:flex;
+ align-items:center;
+ gap:8px
+}
+
+.qty button{
+ width:40px;
+ padding:8px
+}
+
+.total{
+ text-align:right;
+ font-size:22px;
+ font-weight:bold;
+ margin:16px 0
+}
+
+.status{
+ text-align:center;
+ padding:12px;
+ border-radius:12px;
+ font-weight:bold;
+ margin:10px 0
+}
+
+.recebido{background:#fff0df;color:#d65d00}
+.preparando{background:#fff3ae;color:#8a6500}
+.pronto{background:#d8f6df;color:#16813b}
+
+.badge{
+ display:inline-block;
+ padding:6px 10px;
+ border-radius:20px;
+ background:#fff0df;
+ color:#d65d00;
+ font-weight:bold
+}
+
+.notice{
+ background:#fff0df;
+ padding:12px;
+ border-radius:12px;
+ margin:10px 0
+}
+
+.admin-buttons{
+ display:flex;
+ gap:7px;
+ flex-wrap:wrap
+}
+
+.admin-buttons button{
+ flex:1;
+ min-width:100px
+}
 </style>
 </head>
+
 <body>
 
 <header>
-<h1>🍔 Cantina Online</h1>
-<p>Faça seu pedido pelo celular</p>
+<h1>🍔 Cantina ADAI</h1>
+<p>Faça seu pedido sem enfrentar fila</p>
 </header>
 
 <div class="container">
 
-<div id="areaAluno">
-<div class="card">
-<h2>Seu nome</h2>
-<input id="nomeAluno" type="text" placeholder="Digite seu nome">
-</div>
+<!-- ÁREA DO ALUNO -->
 
-<h2>Cardápio</h2>
-<div id="produtos"><p>Carregando cardápio...</p></div>
-
-<div class="card" id="carrinho">
-<h2>🛒 Seu pedido</h2>
-<div id="itensCarrinho"><p>Nenhum produto adicionado.</p></div>
-<div class="total">Total: R$ <span id="total">0,00</span></div>
-<br>
-<button onclick="enviarPedido()" style="width:100%">Enviar pedido</button>
-<div id="mensagem"></div>
-</div>
+<section id="aluno">
 
 <div class="card">
-<h2>📦 Acompanhar pedido</h2>
-<input id="codigoPedido" type="text" placeholder="Digite o código do pedido">
-<button onclick="acompanharPedido()" style="width:100%">Acompanhar</button>
-<div id="statusPedido"></div>
+<h2>🍽️ Cardápio</h2>
+<p>Escolha seus produtos e monte seu pedido.</p>
 </div>
 
-<button onclick="abrirLoginAdmin()" style="display:block;margin:25px auto;background:#333">
-🔐 Área da Cantina
+<div id="cardapio" class="grid"></div>
+
+<div class="card">
+
+<h2>🛒 Seu carrinho</h2>
+
+<div id="carrinho">
+<p>Nenhum produto adicionado.</p>
+</div>
+
+<div class="total">
+Total: <span id="total">R$ 0,00</span>
+</div>
+
+<label>Seu nome</label>
+<input id="nome" placeholder="Digite seu nome">
+
+<label>Forma de pagamento</label>
+
+<select id="pagamento">
+<option>Pagar na retirada</option>
+<option>Pix</option>
+</select>
+
+<button class="main" onclick="enviarPedido()">
+Enviar pedido
 </button>
+
+<div id="mensagem"></div>
+
 </div>
 
-<div id="adminLogin" class="card">
+<div id="acompanhar"></div>
+
+</section>
+
+
+<!-- ÁREA DA CANTINA -->
+
+<section id="cantina" class="hidden">
+
+<div id="login">
+
+<div class="card">
+
 <h2>🔐 Área da Cantina</h2>
-<input id="emailAdmin" type="email" placeholder="E-mail da cantina">
-<input id="senhaAdmin" type="password" placeholder="Senha">
-<button onclick="entrarAdmin()" style="width:100%">Entrar</button>
-<br><br>
-<button onclick="voltarAluno()" style="width:100%;background:#666">Voltar</button>
-<div id="erroLogin"></div>
+
+<p>
+Qualquer adulto da cantina pode entrar usando o mesmo acesso.
+</p>
+
+<label>E-mail</label>
+
+<input
+id="email"
+type="email"
+placeholder="E-mail da cantina"
+>
+
+<label>Senha</label>
+
+<input
+id="senha"
+type="password"
+placeholder="Senha"
+>
+
+<button class="main" onclick="entrar()">
+Entrar
+</button>
+
+<p id="erro"></p>
+
 </div>
 
-<div id="adminArea">
-<div class="card">
-<h2>👨‍🍳 Painel da Cantina</h2>
-<p class="pequeno">Aqui você pode mudar o cardápio e acompanhar os pedidos.</p>
-<button onclick="sairAdmin()" style="background:#666">Sair</button>
 </div>
 
+
+<div id="painel" class="hidden">
+
 <div class="card">
-<h2>🍔 Editar cardápio</h2>
-<div id="adminProdutos"><p>Carregando...</p></div>
-<button onclick="adicionarProduto()" style="width:100%">➕ Adicionar produto</button>
-<button onclick="salvarCardapio()" style="width:100%;margin-top:10px">💾 Salvar cardápio</button>
-<div id="msgCardapio"></div>
-</div>
 
 <h2>📋 Pedidos</h2>
-<div id="listaPedidos"><p>Carregando pedidos...</p></div>
-</div>
+
+<div id="pedidos"></div>
 
 </div>
 
-<script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-getAuth,signInAnonymously,signInWithEmailAndPassword,signOut,onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {
-getDatabase,ref,push,set,onValue,update,get
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+<div class="card">
+
+<h2>🍕 Cardápio</h2>
+
+<p>
+Aqui os adultos podem alterar os produtos e preços.
+</p>
+
+<div id="editarCardapio"></div>
+
+</div>
+
+<button class="secondary" onclick="sair()">
+Sair
+</button>
+
+</div>
+
+</section>
+
+</div>
+
+
+<!-- FIREBASE -->
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+
+
+<script>
 
 const firebaseConfig={
+
 apiKey:"AIzaSyCFNXgbNFQ8GcX1vnbuw9FT0aXWxzrc34",
+
 authDomain:"cantina-igreja-e5f29.firebaseapp.com",
+
 projectId:"cantina-igreja-e5f29",
+
 storageBucket:"cantina-igreja-e5f29.firebasestorage.app",
+
 messagingSenderId:"432970369348",
+
 appId:"1:432970369348:web:f3a0298f132e03e2d62f11",
+
 measurementId:"G-ZXD631PL0M",
-databaseURL:"https://cantina-igreja-e5f29-default-rtdb.europe-west1.firebasedatabase.app/"
+
+databaseURL:
+"https://cantina-igreja-e5f29-default-rtdb.europe-west1.firebasedatabase.app/"
+
 };
 
-const ADMIN_EMAIL="cantinaadai@gmail.com";
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const db=getDatabase(app);
 
-const cardapioPadrao=[
-{id:"coxinha",nome:"Coxinha",preco:5},
-{id:"pastel",nome:"Pastel",preco:5},
-{id:"cachorro",nome:"Cachorro-quente",preco:6},
-{id:"hamburguer",nome:"Hambúrguer",preco:8},
-{id:"pizza",nome:"Pizza",preco:6},
-{id:"refrigerante",nome:"Refrigerante",preco:5},
-{id:"suco",nome:"Suco",preco:4},
-{id:"agua",nome:"Água",preco:2}
-];
+firebase.initializeApp(firebaseConfig);
 
-let produtos=[];
-let carrinho={};
-let listenerPedido=null;
-let listenerPedidosAdmin=null;
+const auth=firebase.auth();
 
-function dinheiro(v){return Number(v).toFixed(2).replace(".",",")}
-function idProduto(nome){return String(nome).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||("produto-"+Date.now())}
+const db=firebase.database();
 
-async function iniciar(){
-try{
-if(!auth.currentUser) await signInAnonymously(auth);
-const snap=await get(ref(db,"menu"));
+
+const EMAIL="cantinaadai@gmail.com";
+
+
+let carrinho=[];
+
+
+let menu={
+
+pizza:{
+nome:"Pizza",
+preco:5,
+opcoes:{
+sabor:[
+"Queijo e presunto",
+"Frango",
+"Calabresa",
+"Portuguesa"
+]
+}
+},
+
+churrasco:{
+nome:"Churrasco no espeto",
+preco:7,
+opcoes:{
+sabor:[
+"Churrasco",
+"Queijo no espeto"
+]
+}
+},
+
+batata:{
+nome:"Batata",
+preco:12,
+opcoes:{
+tamanho:["M","G"],
+adicional:[
+"Sem linguiça",
+"Com linguiça"
+]
+}
+},
+
+activia:{
+nome:"Activia Plus",
+preco:5,
+opcoes:{}
+},
+
+refrigerante:{
+nome:"Refrigerante",
+preco:4,
+opcoes:{}
+},
+
+suco:{
+nome:"Suco",
+preco:3.5,
+opcoes:{}
+},
+
+agua:{
+nome:"Água",
+preco:2.5,
+opcoes:{}
+}
+
+};
+
+
+function dinheiro(valor){
+
+return Number(valor).toLocaleString(
+"pt-BR",
+{
+style:"currency",
+currency:"BRL"
+}
+);
+
+}
+
+
+function carregarMenu(){
+
+db.ref("menu").once("value").then(snap=>{
+
 if(snap.exists()){
-produtos=Object.values(snap.val());
+
+menu=snap.val();
+
 }else{
-produtos=cardapioPadrao;
-try{await set(ref(db,"menu"),Object.fromEntries(produtos.map(p=>[p.id,p])))}catch(e){}
+
+db.ref("menu").set(menu);
+
 }
+
+mostrarMenu();
+
+});
+
+}
+
+
+function mostrarMenu(){
+
+let html="";
+
+Object.entries(menu).forEach(([id,p])=>{
+
+html+=`
+
+<div class="card product">
+
+<h3>${p.nome}</h3>
+
+<div class="price">
+${dinheiro(p.preco)}
+</div>
+`;
+
+if(p.opcoes){
+
+Object.entries(p.opcoes).forEach(([tipo,lista])=>{
+
+html+=`
+
+<label>
+${
+tipo==="sabor"
+?"Sabor":
+tipo==="tamanho"
+?"Tamanho":
+"Adicional"
+}
+</label>
+
+<select id="${id}-${tipo}">
+`;
+
+lista.forEach(op=>{
+
+html+=`<option>${op}</option>`;
+
+});
+
+html+=`
+
+</select>
+
+`;
+
+});
+
+}
+
+html+=`
+
+<button
+class="main"
+style="margin-top:12px"
+onclick="adicionar('${id}')"
+>
+Adicionar
+</button>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("cardapio").innerHTML=html;
+
+}
+
+
+function adicionar(id){
+
+let p=menu[id];
+
+let opcoes={};
+
+Object.entries(p.opcoes||{}).forEach(([tipo])=>{
+
+let campo=document.getElementById(id+"-"+tipo);
+
+if(campo){
+
+opcoes[tipo]=campo.value;
+
+}
+
+});
+
+carrinho.push({
+
+nome:p.nome,
+
+preco:Number(p.preco),
+
+opcoes:opcoes,
+
+quantidade:1
+
+});
+
+mostrarCarrinho();
+
+}
+
+
+function alterarQuantidade(i,valor){
+
+carrinho[i].quantidade+=valor;
+
+if(carrinho[i].quantidade<=0){
+
+carrinho.splice(i,1);
+
+}
+
+mostrarCarrinho();
+
+}
+
+
+function calcularTotal(){
+
+return carrinho.reduce(
+
+(total,item)=>
+total+(item.preco*item.quantidade),
+
+0
+
+);
+
+}
+
+
+function mostrarCarrinho(){
+
+let html="";
+
+if(carrinho.length===0){
+
+html="<p>Nenhum produto adicionado.</p>";
+
+}else{
+
+carrinho.forEach((item,i)=>{
+
+let op="";
+
+Object.values(item.opcoes||{}).forEach(x=>{
+
+op+=x+" • ";
+
+});
+
+html+=`
+
+<div class="cart-item">
+
+<div>
+
+<b>${item.nome}</b>
+
+<div>${op}</div>
+
+<div>${dinheiro(item.preco)}</div>
+
+</div>
+
+<div class="qty">
+
+<button
+class="secondary"
+onclick="alterarQuantidade(${i},-1)"
+>
+−
+</button>
+
+<span>${item.quantidade}</span>
+
+<button
+class="secondary"
+onclick="alterarQuantidade(${i},1)"
+>
++
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+document.getElementById("carrinho").innerHTML=html;
+
+document.getElementById("total").textContent=
+dinheiro(calcularTotal());
+
+}
+
+
+async function enviarPedido(){
+
+let nome=document.getElementById("nome").value.trim();
+
+if(!nome){
+
+alert("Digite seu nome.");
+
+return;
+
+}
+
+if(carrinho.length===0){
+
+alert("Adicione algum produto.");
+
+return;
+
+}
+
+
+let usuario=auth.currentUser;
+
+if(!usuario){
+
+await auth.signInAnonymously();
+
+usuario=auth.currentUser;
+
+}
+
+
+let pedido={
+
+studentUid:usuario.uid,
+
+nome:nome,
+
+pagamento:
+document.getElementById("pagamento").value,
+
+itens:carrinho,
+
+total:calcularTotal(),
+
+status:"Recebido",
+
+data:firebase.database.ServerValue.TIMESTAMP
+
+};
+
+
+let ref=db.ref("orders").push();
+
+await ref.set(pedido);
+
+
+localStorage.setItem(
+"ultimoPedido",
+ref.key
+);
+
+
+carrinho=[];
+
+mostrarCarrinho();
+
+
+document.getElementById("mensagem").innerHTML=`
+
+<div class="notice">
+
+<b>✅ Pedido enviado!</b>
+
+<br>
+
+Número do pedido:
+
+<b>#${ref.key.slice(-5).toUpperCase()}</b>
+
+</div>
+
+`;
+
+acompanharPedido(ref.key);
+
+}
+
+
+function acompanharPedido(id){
+
+db.ref("orders/"+id).on("value",snap=>{
+
+let p=snap.val();
+
+if(!p)return;
+
+let classe=
+
+p.status==="Pronto"
+?"pronto":
+p.status==="Preparando"
+?"preparando":
+"recebido";
+
+
+document.getElementById("acompanhar").innerHTML=`
+
+<div class="card">
+
+<h2>📍 Acompanhar pedido</h2>
+
+<div class="status ${classe}">
+
+${p.status}
+
+</div>
+
+<p>
+Pedido: #${id.slice(-5).toUpperCase()}
+</p>
+
+</div>
+
+`;
+
+});
+
+}
+
+
+async function entrar(){
+
+let email=
+document.getElementById("email").value.trim();
+
+let senha=
+document.getElementById("senha").value;
+
+
+try{
+
+let cred=
+await auth.signInWithEmailAndPassword(
+email,
+senha
+);
+
+
+if(
+(cred.user.email||"").toLowerCase()
+!==EMAIL
+){
+
+throw new Error();
+
+}
+
+
+document.getElementById("login")
+.classList.add("hidden");
+
+document.getElementById("painel")
+.classList.remove("hidden");
+
+mostrarPedidos();
+
+editarCardapio();
+
+
 }catch(e){
-console.error(e);
-produtos=cardapioPadrao;
-}
-mostrarProdutos();
-atualizarCarrinho();
-}
-iniciar();
 
-function mostrarProdutos(){
-const area=document.getElementById("produtos");
-area.innerHTML="";
-produtos.forEach(p=>{
-const div=document.createElement("div");
-div.className="card";
-div.innerHTML=`<div class="produto"><div><h3>${escapeHtml(p.nome)}</h3><span class="preco">R$ ${dinheiro(p.preco)}</span></div><button onclick="adicionar('${p.id}')">+ Adicionar</button></div>`;
-area.appendChild(div);
+document.getElementById("erro").textContent=
+"E-mail ou senha incorretos.";
+
+}
+
+}
+
+
+function mostrarPedidos(){
+
+db.ref("orders").on("value",snap=>{
+
+let html="";
+
+snap.forEach(item=>{
+
+let p=item.val();
+
+html+=`
+
+<div class="card">
+
+<span class="badge">
+#${item.key.slice(-5).toUpperCase()}
+</span>
+
+<h3>${p.nome}</h3>
+
+<p>
+
+${(p.itens||[]).map(i=>
+`${i.quantidade}x ${i.nome}`
+).join("<br>")}
+
+</p>
+
+<p>
+Total: <b>${dinheiro(p.total)}</b>
+</p>
+
+<p>
+Pagamento: ${p.pagamento}
+</p>
+
+<div class="admin-buttons">
+
+<button
+class="secondary"
+onclick="mudarStatus('${item.key}','Recebido')"
+>
+Recebido
+</button>
+
+<button
+class="secondary"
+onclick="mudarStatus('${item.key}','Preparando')"
+>
+Preparando
+</button>
+
+<button
+class="main"
+onclick="mudarStatus('${item.key}','Pronto')"
+>
+Pronto
+</button>
+
+</div>
+
+<div class="status ${
+p.status==="Pronto"
+?"pronto":
+p.status==="Preparando"
+?"preparando":
+"recebido"
+}">
+
+${p.status}
+
+</div>
+
+</div>
+
+`;
+
 });
-}
-function escapeHtml(v){return String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 
-window.adicionar=id=>{carrinho[id]=(carrinho[id]||0)+1;atualizarCarrinho()}
-window.remover=id=>{if(!carrinho[id])return;carrinho[id]--;if(carrinho[id]<=0)delete carrinho[id];atualizarCarrinho()}
+document.getElementById("pedidos").innerHTML=
+html||"<p>Nenhum pedido ainda.</p>";
 
-function atualizarCarrinho(){
-const area=document.getElementById("itensCarrinho");area.innerHTML="";
-let total=0;const ids=Object.keys(carrinho);
-if(!ids.length){area.innerHTML="<p>Nenhum produto adicionado.</p>";document.getElementById("total").textContent="0,00";return}
-ids.forEach(id=>{
-const p=produtos.find(x=>x.id===id);if(!p)return;
-const qtd=carrinho[id],sub=p.preco*qtd;total+=sub;
-const d=document.createElement("div");d.className="item-carrinho";
-d.innerHTML=`<div><b>${escapeHtml(p.nome)}</b><br>R$ ${dinheiro(sub)}</div><div class="qtd"><button onclick="remover('${id}')">−</button><b>${qtd}</b><button onclick="adicionar('${id}')">+</button></div>`;
-area.appendChild(d);
 });
-document.getElementById("total").textContent=dinheiro(total);
+
 }
 
-function mostrarMensagem(t,s){
-const d=document.getElementById("mensagem");d.style.display="block";d.className=s?"sucesso":"erro";d.textContent=t;
+
+function mudarStatus(id,status){
+
+db.ref("orders/"+id+"/status").set(status);
+
 }
 
-window.enviarPedido=async()=>{
-const nome=document.getElementById("nomeAluno").value.trim();
-if(!nome){mostrarMensagem("Digite seu nome primeiro.",false);return}
-if(!Object.keys(carrinho).length){mostrarMensagem("Adicione pelo menos um produto.",false);return}
-try{
-if(!auth.currentUser || auth.currentUser.email) await signInAnonymously(auth);
-const pedidoRef=push(ref(db,"orders"));const itens=[];let total=0;
-Object.keys(carrinho).forEach(id=>{const p=produtos.find(x=>x.id===id);if(!p)return;itens.push({nome:p.nome,quantidade:carrinho[id],preco:p.preco});total+=p.preco*carrinho[id]});
-await set(pedidoRef,{studentUid:auth.currentUser.uid,nome,itens,total,status:"RECEBIDO",criadoEm:Date.now()});
-document.getElementById("codigoPedido").value=pedidoRef.key;
-mostrarMensagem("Pedido enviado! Código: "+pedidoRef.key,true);
-carrinho={};atualizarCarrinho();acompanharPedido();
-}catch(e){console.error(e);mostrarMensagem("Não foi possível enviar o pedido. Verifique o Firebase.",false)}
-};
 
-window.acompanharPedido=()=>{
-const codigo=document.getElementById("codigoPedido").value.trim();
-if(!codigo){document.getElementById("statusPedido").innerHTML="<p>Digite o código do pedido.</p>";return}
-if(listenerPedido)listenerPedido();
-listenerPedido=onValue(ref(db,"orders/"+codigo),snap=>{
-if(!snap.exists()){document.getElementById("statusPedido").innerHTML="<p>Pedido não encontrado.</p>";return}
-const p=snap.val();
-document.getElementById("statusPedido").innerHTML=`<div class="card"><h3>Pedido de ${escapeHtml(p.nome)}</h3><p><b>Status:</b> ${escapeHtml(p.status)}</p>${p.status==="PRONTO"?"<h3>✅ Seu pedido está pronto!</h3>":""}</div>`;
+function editarCardapio(){
+
+let html="";
+
+Object.entries(menu).forEach(([id,p])=>{
+
+html+=`
+
+<div class="card">
+
+<label>Produto</label>
+
+<input
+id="nome-${id}"
+value="${p.nome}"
+>
+
+<label>Preço</label>
+
+<input
+id="preco-${id}"
+type="number"
+step="0.01"
+value="${p.preco}"
+>
+`;
+
+Object.entries(p.opcoes||{}).forEach(([tipo,lista])=>{
+
+html+=`
+
+<label>
+${
+tipo==="sabor"
+?"Sabores":
+tipo==="tamanho"
+?"Tamanhos":
+"Adicionais"
+}
+</label>
+
+<input
+id="op-${id}-${tipo}"
+value="${lista.join(" | ")}"
+>
+
+`;
+
 });
-};
 
-window.abrirLoginAdmin=()=>{
-document.getElementById("areaAluno").style.display="none";
-document.getElementById("adminLogin").style.display="block";
-};
-window.voltarAluno=()=>{
-document.getElementById("adminLogin").style.display="none";
-document.getElementById("adminArea").style.display="none";
-document.getElementById("areaAluno").style.display="block";
-};
-window.entrarAdmin=async()=>{
-const email=document.getElementById("emailAdmin").value.trim();
-const senha=document.getElementById("senhaAdmin").value;
-const erro=document.getElementById("erroLogin");
-if(!email||!senha){erro.innerHTML="<p>Digite o e-mail e a senha.</p>";return}
-if(email.toLowerCase()!==ADMIN_EMAIL){erro.innerHTML="<p>❌ Use o e-mail da cantina cadastrado no Firebase.</p>";return}
-try{
-await signInWithEmailAndPassword(auth,email,senha);
-document.getElementById("adminLogin").style.display="none";
-document.getElementById("areaAluno").style.display="none";
-document.getElementById("adminArea").style.display="block";
-carregarPedidosAdmin();carregarCardapioAdmin();
-}catch(e){
-console.error(e);
-erro.innerHTML="<p>❌ Não foi possível entrar. Confira se esse e-mail existe em Authentication → Users e se Email/Password está ativado.</p>";
-}
-};
+html+=`
 
-async function carregarCardapioAdmin(){
-try{
-const snap=await get(ref(db,"menu"));
-if(snap.exists())produtos=Object.values(snap.val());
-renderAdminProdutos();
-}catch(e){console.error(e);renderAdminProdutos()}
-}
-function renderAdminProdutos(){
-const area=document.getElementById("adminProdutos");area.innerHTML="";
-produtos.forEach((p,i)=>{
-const d=document.createElement("div");d.className="admin-produto";
-d.innerHTML=`<input class="nome" data-i="${i}" value="${escapeHtml(p.nome)}"><input class="preco-input" data-i="${i}" type="number" step="0.01" min="0" value="${Number(p.preco).toFixed(2)}"><button class="btn-vermelho" onclick="excluirProduto(${i})">🗑️</button>`;
-area.appendChild(d);
-});
-}
-window.adicionarProduto=()=>{
-produtos.push({id:"produto-"+Date.now(),nome:"Novo produto",preco:0});
-renderAdminProdutos();
-};
-window.excluirProduto=i=>{produtos.splice(i,1);renderAdminProdutos()};
-window.salvarCardapio=async()=>{
-try{
-const nomes=[...document.querySelectorAll("#adminProdutos .nome")];
-const precos=[...document.querySelectorAll("#adminProdutos .preco-input")];
-produtos.forEach((p,i)=>{p.nome=nomes[i].value.trim()||"Produto";p.preco=Math.max(0,Number(precos[i].value)||0);p.id=p.id||idProduto(p.nome)});
-const objeto={};produtos.forEach(p=>objeto[p.id]=p);
-await set(ref(db,"menu"),objeto);
-mostrarProdutos();
-document.getElementById("msgCardapio").innerHTML="<p style='color:green'>✅ Cardápio salvo!</p>";
-}catch(e){console.error(e);document.getElementById("msgCardapio").innerHTML="<p style='color:#b00020'>❌ Não foi possível salvar. Verifique as regras do Firebase.</p>"}
-};
+<button
+class="main"
+style="margin-top:10px"
+onclick="salvarProduto('${id}')"
+>
+Salvar alterações
+</button>
 
-function carregarPedidosAdmin(){
-if(listenerPedidosAdmin)listenerPedidosAdmin();
-listenerPedidosAdmin=onValue(ref(db,"orders"),snap=>{
-const area=document.getElementById("listaPedidos");area.innerHTML="";
-if(!snap.exists()){area.innerHTML="<p>Nenhum pedido ainda.</p>";return}
-Object.entries(snap.val()).reverse().forEach(([id,p])=>{
-let itensHTML="";
-(p.itens||[]).forEach(item=>itensHTML+=`<li>${item.quantidade}x ${escapeHtml(item.nome)}</li>`);
-const d=document.createElement("div");d.className="pedido";
-d.innerHTML=`<h3>👤 ${escapeHtml(p.nome)}</h3><p class="pequeno">Código: ${id}</p><p><b>Itens:</b></p><ul>${itensHTML}</ul><p><b>Total:</b> R$ ${dinheiro(p.total)}</p><p class="status">Status: ${escapeHtml(p.status)}</p><button onclick="mudarStatus('${id}','RECEBIDO')">RECEBIDO</button><button onclick="mudarStatus('${id}','PREPARANDO')">PREPARANDO</button><button onclick="mudarStatus('${id}','PRONTO')">PRONTO</button>`;
-area.appendChild(d);
-});
-});
-}
-window.mudarStatus=async(id,status)=>{
-try{await update(ref(db,"orders/"+id),{status})}catch(e){console.error(e);alert("Não foi possível alterar o status.")}
-};
-window.sairAdmin=async()=>{
-if(listenerPedidosAdmin){listenerPedidosAdmin();listenerPedidosAdmin=null}
-await signOut(auth);
-document.getElementById("adminArea").style.display="none";
-document.getElementById("adminLogin").style.display="none";
-document.getElementById("areaAluno").style.display="block";
-try{await signInAnonymously(auth)}catch(e){}
-};
+</div>
 
-onAuthStateChanged(auth,user=>{
-if(user&&user.email===ADMIN_EMAIL){
-document.getElementById("areaAluno").style.display="none";
-document.getElementById("adminLogin").style.display="none";
-document.getElementById("adminArea").style.display="block";
-carregarPedidosAdmin();carregarCardapioAdmin();
-}
+`;
+
 });
+
+document.getElementById("editarCardapio").innerHTML=html;
+
+}
+
+
+function salvarProduto(id){
+
+let p=menu[id];
+
+p.nome=
+document.getElementById("nome-"+id).value;
+
+p.preco=
+Number(document.getElementById("preco-"+id).value);
+
+
+Object.keys(p.opcoes||{}).forEach(tipo=>{
+
+let valor=
+document.getElementById("op-"+id+"-"+tipo).value;
+
+p.opcoes[tipo]=
+valor.split("|")
+.map(x=>x.trim())
+.filter(Boolean);
+
+});
+
+
+db.ref("menu/"+id).set(p).then(()=>{
+
+alert("Cardápio atualizado!");
+
+});
+
+}
+
+
+function sair(){
+
+auth.signOut().then(()=>{
+
+location.reload();
+
+});
+
+}
+
+
+/* LOGIN DA CANTINA */
+
+document.querySelector("header")
+.addEventListener("dblclick",()=>{
+
+document.getElementById("aluno")
+.classList.add("hidden");
+
+document.getElementById("cantina")
+.classList.remove("hidden");
+
+});
+
+
+/* ALUNO */
+
+auth.onAuthStateChanged(user=>{
+
+if(!user){
+
+auth.signInAnonymously();
+
+}
+
+});
+
+
+carregarMenu();
+
 </script>
+
 </body>
 </html>
